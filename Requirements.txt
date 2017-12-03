@@ -1,0 +1,36 @@
+1. Nerd can sign up for site. Following information will be provided by the nerd
+ -Name (Required)
+ -Addresses (Optional)
+ -Phone (Optional)
+ -Emails (Required)
+ -Photo (Optional)
+ -Password (Required)
+
+2. Nerd can reset password
+  -Provide password and reset link will be sent to their email address
+
+3. Nerd can create dinners
+  -Dinner title
+  -Address (Required)
+  -Date/Time
+  -Max attendees
+  -Dinner type Open/Closed
+
+4. Nerds can invite other nerd to dinner
+    -Can filter existing nerd on site
+    -Only the creator of a dinner can invite other nerd to that dinner
+    -Can provide email address, first and last name of other nerd. Account will be created and email invite sent to the new nerd
+
+5. Nerds can search for dinners
+   -Can filter by zip code, state, city
+   -Only Open dinners will be displayed
+
+6. Nerds can register for a dinner
+   -Dinner slots are allocated on a first come - first served method
+   -If the dinner is full they will be added to the wait-list.
+
+7. Nerds can find dinners they have reserved
+   -Past dinners will be displayed in a separate section
+   -Future dinners will be displayed in soonest to latest order. They can cancel their reservation for the dinner here.
+
+8. Site needs to not look like fucking garbage.
