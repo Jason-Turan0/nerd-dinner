@@ -13,10 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -35,10 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login").passwordParameter("password").usernameParameter("username").defaultSuccessUrl("/")
                 .permitAll()
                 .and()
-                .logout()
+                .logout().logoutSuccessUrl("/login?logout")
                 .permitAll();
 
         http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
