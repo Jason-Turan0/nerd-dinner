@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="common/minimum">
+<head>
+    <title th:text="#{login.registerAccount.title}">Register account</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="card card-register mx-auto mt-5">
+        <div class="card-header" th:text="#{login.registerAccount.registerAnAccount}"></div>
+        <div class="card-body">
+            <form th:action="@{/registerAccount}" th:object="${registerAccount}" action="/registerAccount"
+                  method="post">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label th:text="#{login.registerAccount.firstName}" for="firstName"></label>
+                            <input class="form-control" th:field="*{firstName}"
+                                   th:attr="placeholder=#{login.registerAccount.enterFirstName}" type="text"
+                                   aria-describedby="nameHelp"
+                                   placeholder="Enter first name"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label th:text="#{login.registerAccount.lastName}" for="lastName"></label>
+                            <input class="form-control" th:field="*{lastName}" type="text"
+                                   aria-describedby="nameHelp"
+                                   th:attr="placeholder=#{login.registerAccount.enterLastName}" placeholder=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label th:text="#{login.registerAccount.userName}" for="userName"></label>
+                    <input class="form-control" th:field="*{userName}"
+                           th:attr="placeholder=#{login.registerAccount.enterUserName}" placeholder=""/>
+                </div>
+                <div class="form-group">
+                    <label for="email" th:text="#{login.registerAccount.emailAddress}"></label>
+                    <input class="form-control" th:field="*{email}" type="email" aria-describedby="emailHelp"
+                           th:attr="placeholder=#{login.registerAccount.enterEmail}" placeholder=""/>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label th:text="#{login.registerAccount.password}" for="password"></label>
+                            <input class="form-control" th:field="*{password}" type="password"
+                                   th:attr="placeholder=#{login.registerAccount.password}" placeholder=""/>
+                        </div>
+                        <div class="col-md-6">
+                            <label th:text="#{login.registerAccount.confirmPassword}" for="confirmPassword"></label>
+                            <input class="form-control" th:field="*{confirmPassword}" type="password"
+                                   th:attr="placeholder=#{login.registerAccount.confirmPassword}" placeholder=""/>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" th:text="#{login.registerAccount.register}"
+                        type="submit"></button>
+            </form>
+            <div class="text-center">
+                <a class="d-block small mt-3" th:text="#{login.registerAccount.loginPage}" href="/login"></a>
+                <a class="d-block small" th:text="#{login.registerAccount.forgotPassword}" href="/forgotPassword"></a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

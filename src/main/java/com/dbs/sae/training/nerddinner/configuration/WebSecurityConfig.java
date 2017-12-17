@@ -1,5 +1,6 @@
 package com.dbs.sae.training.nerddinner.configuration;
 
+import com.dbs.sae.training.nerddinner.controller.Paths;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
 import com.dbs.sae.training.nerddinner.domain.NerdUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/home","/blank", "/console/**", "/webjars/**").permitAll();
-
+                .antMatchers(
+                        Paths.Login.forgotPasswordPath,
+                        Paths.Login.registerAccountPath,
+                        Paths.Login.loginPath,
+                        "/console/**",
+                        "/webjars/**").permitAll();
 
         http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").passwordParameter("password").usernameParameter("username").defaultSuccessUrl("/")
-                .permitAll()
+                .loginPage(Paths.Login.loginPath).passwordParameter("password").usernameParameter("username").defaultSuccessUrl("/")
                 .and()
-                .logout().logoutSuccessUrl("/login?logout")
+                .logout().logoutSuccessUrl(Paths.Login.loginPath + "?logout")
                 .permitAll();
 
         http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
