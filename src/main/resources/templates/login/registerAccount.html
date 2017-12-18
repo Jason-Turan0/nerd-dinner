@@ -15,41 +15,59 @@
                 <div class="form-group">
                     <div class="form-row">
                         <div class="col-md-6">
-                            <label th:text="#{login.registerAccount.firstName}" for="firstName"></label>
-                            <input class="form-control" th:field="*{firstName}"
-                                   th:attr="placeholder=#{login.registerAccount.enterFirstName}" type="text"
-                                   aria-describedby="nameHelp"
-                                   placeholder="Enter first name"/>
+                            <div th:replace="fragments/inputs::
+                                textInput(
+                                    fieldName='firstName',
+                                    field=*{firstName},
+                                    displayName= #{login.registerAccount.firstName},
+                                    placeHolder= #{login.registerAccount.enterFirstName})"></div>
                         </div>
                         <div class="col-md-6">
-                            <label th:text="#{login.registerAccount.lastName}" for="lastName"></label>
-                            <input class="form-control" th:field="*{lastName}" type="text"
-                                   aria-describedby="nameHelp"
-                                   th:attr="placeholder=#{login.registerAccount.enterLastName}" placeholder=""/>
+                            <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='lastName',
+                                                field=*{lastName},
+                                                displayName=#{login.registerAccount.lastName},
+                                                placeHolder=#{login.registerAccount.enterLastName})"></div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label th:text="#{login.registerAccount.userName}" for="userName"></label>
-                    <input class="form-control" th:field="*{userName}"
-                           th:attr="placeholder=#{login.registerAccount.enterUserName}" placeholder=""/>
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='userName',
+                                                field=*{userName},
+                                                displayName=#{login.registerAccount.userName},
+                                                placeHolder=#{login.registerAccount.enterUserName})"></div>
                 </div>
                 <div class="form-group">
-                    <label for="email" th:text="#{login.registerAccount.emailAddress}"></label>
-                    <input class="form-control" th:field="*{email}" type="email" aria-describedby="emailHelp"
-                           th:attr="placeholder=#{login.registerAccount.enterEmail}" placeholder=""/>
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='email',
+                                                field=*{email},
+                                                displayName=#{login.registerAccount.emailAddress},
+                                                placeHolder=#{login.registerAccount.enterEmail},
+                                                type='Email')"></div>
                 </div>
                 <div class="form-group">
                     <div class="form-row">
                         <div class="col-md-6">
-                            <label th:text="#{login.registerAccount.password}" for="password"></label>
-                            <input class="form-control" th:field="*{password}" type="password"
-                                   th:attr="placeholder=#{login.registerAccount.password}" placeholder=""/>
+                            <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='password',
+                                                field=*{password},
+                                                displayName=#{login.registerAccount.password},
+                                                placeHolder=#{login.registerAccount.password},
+                                                type='Password')"></div>
                         </div>
                         <div class="col-md-6">
-                            <label th:text="#{login.registerAccount.confirmPassword}" for="confirmPassword"></label>
-                            <input class="form-control" th:field="*{confirmPassword}" type="password"
-                                   th:attr="placeholder=#{login.registerAccount.confirmPassword}" placeholder=""/>
+                            <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='confirmPassword',
+                                                field=*{confirmPassword},
+                                                displayName=#{login.registerAccount.confirmPassword},
+                                                placeHolder=#{login.registerAccount.confirmPassword},
+                                                type='Password')"></div>
                         </div>
                     </div>
                 </div>
