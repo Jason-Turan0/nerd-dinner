@@ -1,8 +1,7 @@
 package com.dbs.sae.training.nerddinner.data.repositories;
 
-import com.dbs.sae.training.nerddinner.data.models.NerdDinnerReservation;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.dbs.sae.training.nerddinner.data.models.NerdEmail;
 
-public interface NerdEmailRepository extends JpaRepository<NerdDinnerReservation, Integer> {
+public interface NerdEmailRepository extends BaseNerdRepository<NerdEmail, Integer> {
 
 }

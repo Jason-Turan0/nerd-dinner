@@ -26,6 +26,9 @@ public class NerdEmail {
     @Column(name="LAST_UPDATE_DATE")
     private Timestamp lastUpdateDate;
 
+    @Column(name = "EMAIL")
+    private String email;
+
     @Column(name="EXPIRED_DATE")
     private Timestamp expiredDate;
 

@@ -1,5 +1,7 @@
 package com.dbs.sae.training.nerddinner.model;
 
+import lombok.NonNull;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +14,7 @@ public class MatchesValidator implements ConstraintValidator<Matches, Object> {
     private Matches constraintAnnotation;
 
 
-    public void initialize(Matches constraintAnnotation) {
+    public void initialize(@NonNull Matches constraintAnnotation) {
         this.field = constraintAnnotation.field();
         this.verifyField = constraintAnnotation.verifyField();
         this.constraintAnnotation = constraintAnnotation;
