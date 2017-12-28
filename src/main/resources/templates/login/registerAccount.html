@@ -6,80 +6,86 @@
     <title th:text="#{login.registerAccount.title}">Register account</title>
 </head>
 <body>
+<section layout:fragment="header">
+    <th:block th:text="#{login.registerAccount.registerAnAccount}"></th:block>
+</section>
+
 <section layout:fragment="content">
-    <div class="card card-register mx-auto mt-5">
-        <div class="card-header" th:text="#{login.registerAccount.registerAnAccount}"></div>
-        <div class="card-body">
-            <form th:action="@{/registerAccount}" th:object="${registerAccount}" action="/registerAccount"
-                  method="post">
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div th:replace="fragments/inputs::
+
+    <form th:action="@{/registerAccount}" th:object="${registerAccount}" action="/registerAccount"
+          method="post">
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
                                 textInput(
                                     fieldName='firstName',
                                     field=*{firstName},
                                     displayName= #{login.registerAccount.firstName},
                                     placeHolder= #{login.registerAccount.enterFirstName})"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <div th:replace="fragments/inputs::
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='lastName',
                                                 field=*{lastName},
                                                 displayName=#{login.registerAccount.lastName},
                                                 placeHolder=#{login.registerAccount.enterLastName})"></div>
-                        </div>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <div th:replace="fragments/inputs::
+            </div>
+        </div>
+        <div class="form-group">
+            <div th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='userName',
                                                 field=*{userName},
                                                 displayName=#{login.registerAccount.userName},
                                                 placeHolder=#{login.registerAccount.enterUserName})"></div>
-                </div>
-                <div class="form-group">
-                    <div th:replace="fragments/inputs::
+        </div>
+        <div class="form-group">
+            <div class="col-md-8"></div>
+            <div th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='email',
                                                 field=*{email},
                                                 displayName=#{login.registerAccount.emailAddress},
                                                 placeHolder=#{login.registerAccount.enterEmail},
-                                                type='Email')"></div>
-                </div>
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div th:replace="fragments/inputs::
+                                                type='Email')">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='password',
                                                 field=*{password},
                                                 displayName=#{login.registerAccount.password},
                                                 placeHolder=#{login.registerAccount.password},
                                                 type='Password')"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <div th:replace="fragments/inputs::
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='confirmPassword',
                                                 field=*{confirmPassword},
                                                 displayName=#{login.registerAccount.confirmPassword},
                                                 placeHolder=#{login.registerAccount.confirmPassword},
                                                 type='Password')"></div>
-                        </div>
-                    </div>
                 </div>
-                <button class="btn btn-primary btn-block" th:text="#{login.registerAccount.register}"
-                        type="submit"></button>
-            </form>
-            <div class="text-center">
-                <a class="d-block small mt-3" th:text="#{login.registerAccount.loginPage}" href="/login"></a>
-                <a class="d-block small" th:text="#{login.registerAccount.forgotPassword}" href="/forgotPassword"></a>
             </div>
         </div>
-    </div>
+        <button class="btn btn-primary btn-block" th:text="#{login.registerAccount.register}"
+                type="submit"></button>
+
+    </form>
+    <div class="text-center">
+        <a class="d-block small mt-3" href="/login" th:text="#{login.forgotPassword.loginPage}"></a>
+        <a class="d-block small" href="/forgotPassword" th:text="#{login.login.forgotPassword}"></a>
+        </div>
+
+
 </section>
 </body>
 </html>

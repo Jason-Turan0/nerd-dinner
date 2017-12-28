@@ -1,9 +1,9 @@
 package com.dbs.sae.training.nerddinner.data.repositories;
 
-import com.dbs.sae.training.nerddinner.data.models.*;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.dbs.sae.training.nerddinner.data.common.BaseNerdRepository;
+import com.dbs.sae.training.nerddinner.data.models.Address;
 
-public interface AddressRepository extends JpaRepository<Address, Integer> {
+public interface AddressRepository extends BaseNerdRepository<Address, Integer> {
 
 }
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Getter
@@ -13,13 +15,15 @@ import javax.persistence.*;
 public class NerdContactType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="NERD_CONTACT_TYPE_PK")
     private Integer nerdContactTypePk;
 
     @Column(name="CONTACT_TYPE_CODE")
     private String contactTypeCode;
 
+    @OneToMany(mappedBy = "nerdContactType", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<NerdContactTypeDescription> descriptions = new HashSet<NerdContactTypeDescription>();
 
     @Override
     public boolean equals(Object o) {

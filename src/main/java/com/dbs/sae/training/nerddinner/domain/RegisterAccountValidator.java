@@ -1,7 +1,5 @@
 package com.dbs.sae.training.nerddinner.domain;
 
-import com.dbs.sae.training.nerddinner.data.models.Nerd;
-import com.dbs.sae.training.nerddinner.data.models.NerdEmail;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdEmailRepository;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
 import com.dbs.sae.training.nerddinner.model.RegisterAccount;
@@ -35,16 +33,16 @@ public class RegisterAccountValidator implements Validator {
         String email = ra.getEmail();
         String userName = ra.getUserName();
         if (email != null) {
-            NerdEmail matching = nerdEmailRepository.findOneByPropertyValue(NerdEmail.class, email, NerdEmail::setEmail);
-            if (matching != null) {
-                errors.rejectValue("email", "login.registerAccount.emailAlreadyExists");
-            }
+            //NerdEmail matching = nerdEmailRepository.findOneByPropertyValue(NerdEmail.class, email, NerdEmail::setEmail);
+            //if (matching != null) {
+            //     errors.rejectValue("email", "login.registerAccount.emailAlreadyExists");
+            // }
         }
         if (userName != null) {
-            Nerd matching = nerdRepository.findOneByPropertyValue(Nerd.class, userName, Nerd::setUserName);
-            if (matching != null) {
-                errors.rejectValue("userName", "userNameExists", new Object[]{"'userName'"}, "{login.registerAccount.usernameAlreadyExists}");
-            }
+            //Nerd matching = nerdRepository.findOneByPropertyValue(Nerd.class, userName, Nerd::setUserName);
+            //if (matching != null) {
+            //   errors.rejectValue("userName", "userNameExists", new Object[]{"'userName'"}, "{login.registerAccount.usernameAlreadyExists}");
+            // }
         }
     }
 

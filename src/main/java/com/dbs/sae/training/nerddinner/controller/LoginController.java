@@ -4,6 +4,7 @@ import com.dbs.sae.training.nerddinner.domain.RegisterAccountValidator;
 import com.dbs.sae.training.nerddinner.model.RegisterAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,13 @@ public class LoginController {
 
     private final RegisterAccountValidator validator;
 
+
     @Autowired
     public LoginController(RegisterAccountValidator validator) {
         this.validator = validator;
     }
 
-    @InitBinder
+    @InitBinder("registerAccount")
     private void initBinder(WebDataBinder binder) {
         binder.addValidators(validator);
     }
@@ -37,6 +39,11 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping(Paths.Login.setLocalePath)
+    public String setLocale(Model model) {
+        return "login/setLocale";
+    }
+
     @GetMapping(Paths.Login.registerAccountPath)
     public String registerAccount(final RegisterAccount registerAccount) {
         return "login/registerAccount";
@@ -44,6 +51,7 @@ public class LoginController {
 
     @PostMapping(Paths.Login.registerAccountPath)
     public String postRegisterAccount(@Valid RegisterAccount registerAccount, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return "login/registerAccount";
         }

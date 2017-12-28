@@ -10,5 +10,6 @@ public final class Paths {
         public static final String forgotPasswordPath = "/forgotPassword";
         public static final String registerAccountPath = "/registerAccount";
         public static final String loginPath = "/login";
+        public static final String setLocalePath = "/setLocale";
     }
 }

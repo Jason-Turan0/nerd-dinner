@@ -3,7 +3,6 @@ package com.dbs.sae.training.nerddinner.domain;
 import com.dbs.sae.training.nerddinner.data.models.Nerd;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,9 +19,7 @@ public class NerdUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Nerd example = new Nerd();
-        example.setUserName(username);
-        Nerd nerd = this.nerdRepo.findOne(Example.of(example));
+        Nerd nerd = this.nerdRepo.findOneByPropertyValue(Nerd.class, username, (n, u) -> n.setUserName(u));
         if (nerd == null) {
             throw new UsernameNotFoundException("Failed to find NERD with user name: " + username);
         }

@@ -1,5 +1,7 @@
 package com.dbs.sae.training.nerddinner.configuration;
 
+import com.dbs.sae.training.nerddinner.data.repositories.LocaleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -7,56 +9,39 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+
+import java.util.Locale;
 
 @Configuration
 //@EnableWebMvc
 //@Import(ThymeLeafConfig.class)
 public class WebConfig extends WebMvcConfigurationSupport {
 
-    /*@Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }*/
-
-   /* @Override
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
-        requestMappingHandlerMapping.setUseSuffixPatternMatch(false);
-        requestMappingHandlerMapping.setUseTrailingSlashMatch(false);
-        return requestMappingHandlerMapping;
-    }*/
-
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/META-INF/resources/", "classpath:/resources/",
             "classpath:/static/", "classpath:/public/" };
 
-/*
-    @Bean
-    @Primary
-    public ReloadableResourceBundleMessageSource resourceBundleMessageSource(){
-        ReloadableResourceBundleMessageSource  s = new ReloadableResourceBundleMessageSource ();
-        s.setBasename("Messages");
-        s.setDefaultEncoding("UTF-8");
-        return s;
-    }
-*/
+    @Autowired
+    LocaleRepository repository;
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new CookieLocaleResolver();
+        CookieLocaleResolver localeResolver = new CookieThenAcceptHeaderLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.US);
+        localeResolver.setCookieName("nerd-locale");
+        localeResolver.setCookieMaxAge(3600);
+        return localeResolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang");
-        return lci;
+    public LocalizationInterceptor getLocalizationInterceptor() {
+        LocalizationInterceptor c = new LocalizationInterceptor(repository);
+        return c;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
+        registry.addInterceptor(getLocalizationInterceptor());
     }
 
     @Override

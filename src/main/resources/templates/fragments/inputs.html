@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<!--<div th:fragment="textInput (propertyName, propertyDisplayName, placeHolderText)">
-    <label th:text="propertyDisplayName"></label>
-    <input th:classappend="${#fields.hasErrors(propertyName)} ? 'is-invalid':''" class="form-control" th:field="*{propertyName}"
-           th:attr="placeholder=placeHolderText" type="text"
-           placeholder=""/>
-    <small th:if="${#fields.hasErrors(propertyName)}" th:errors="*{propertyName}" class="text-danger"/>
-</div>-->
-
 <div th:fragment="textInput(fieldName, field, displayName, placeHolder)">
     <label th:text="${displayName}"></label>
     <input
@@ -21,6 +13,14 @@
             th:placeholder="${placeHolder}"/>
     <small th:if="${#fields.hasErrors(fieldName)}" th:each="error : ${#fields.errors(fieldName)}" th:text="${error}"
            class="text-danger"/>
+</div>
+<div th:fragment="localeSelector">
+    <select id="localeSelector" class="form-control" th:value="${selectedLocale}">
+        <option th:each="locale : ${locales}"
+                th:value="*{locale.localeId}"
+                th:text="${locale.languageName +'-'+locale.countryName }"
+                th:selected="${selectedLocale} == ${locale.localeId}"></option>
+    </select>
 </div>
 
 </body>

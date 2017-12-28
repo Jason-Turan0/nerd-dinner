@@ -1,11 +1,10 @@
 package com.dbs.sae.training.nerddinner.data.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -14,7 +13,7 @@ import java.util.Set;
 public class Nerd {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NERD_PK")
     private Integer nerdPk;
 

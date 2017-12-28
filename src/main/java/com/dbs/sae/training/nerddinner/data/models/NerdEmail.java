@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Entity(name = "NERD_EMAILS")
 public class NerdEmail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NERD_EMAIL_PK")
     private Integer nerdEmailPk;
 

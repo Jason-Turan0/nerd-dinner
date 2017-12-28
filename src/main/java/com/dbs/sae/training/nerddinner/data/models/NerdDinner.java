@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity(name = "NERD_DINNERS")
 public class NerdDinner {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NERD_DINNER_PK")
     private Integer nerdDinnerPk;
 
@@ -40,6 +40,11 @@ public class NerdDinner {
     private Nerd creatorNerd;
 
     @OneToMany(mappedBy = "nerdDinner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<NerdDinnerReservation> reservations = new HashSet<NerdDinnerReservation>();
+    private Set<NerdDinnerReservation> reservations = new HashSet<>();
+
+    @OneToMany(mappedBy = "nerdDinner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<NerdDinnerDescription> descriptions = new HashSet<>();
+
+
 
 }

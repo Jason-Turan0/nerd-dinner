@@ -1,17 +1,18 @@
 package com.dbs.sae.training.nerddinner;
 
+import com.dbs.sae.training.nerddinner.data.configuration.NerdRepositoryFactoryBean;
 import com.dbs.sae.training.nerddinner.data.models.Address;
 import com.dbs.sae.training.nerddinner.data.models.Nerd;
 import com.dbs.sae.training.nerddinner.data.models.NerdAddress;
 import com.dbs.sae.training.nerddinner.data.models.NerdContactType;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdContactTypeRepository;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
-import org.assertj.core.util.Sets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -24,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@EnableJpaRepositories(repositoryFactoryBeanClass = NerdRepositoryFactoryBean.class)
 public class NerddinnerRepositoryTests {
 
 	@Autowired
@@ -42,7 +44,6 @@ public class NerddinnerRepositoryTests {
 		n.setLastName("Doe");
 		n.setUserName(generateUniqueUserName());
 		n.setPassword(generatePassword());
-
 		Nerd savedNerd = this.repo.save(n);
 
 		n.setNerdPk(savedNerd.getNerdPk());
