@@ -42,7 +42,7 @@ public class NerdEmail {
 
     @Override
     public int hashCode() {
-        return nerdEmailPk.hashCode();
+        return nerdEmailPk == null ? 0 : nerdEmailPk.hashCode();
     }
 
 }

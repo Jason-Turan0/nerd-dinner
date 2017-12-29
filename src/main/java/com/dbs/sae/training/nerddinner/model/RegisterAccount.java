@@ -3,6 +3,8 @@ package com.dbs.sae.training.nerddinner.model;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Matches(field = "password", verifyField = "confirmPassword")
 public class RegisterAccount {
@@ -17,7 +19,7 @@ public class RegisterAccount {
     private String email;
 
     @NotEmpty()
-    private String userName;
+    private String username;
 
     @NotEmpty()
     private String password;
@@ -25,5 +27,7 @@ public class RegisterAccount {
     @NotEmpty()
     private String confirmPassword;
 
+    @NotNull
+    private Integer selectedContactType;
 
 }

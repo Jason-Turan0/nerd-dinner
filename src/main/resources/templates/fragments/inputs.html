@@ -14,14 +14,39 @@
     <small th:if="${#fields.hasErrors(fieldName)}" th:each="error : ${#fields.errors(fieldName)}" th:text="${error}"
            class="text-danger"/>
 </div>
-<div th:fragment="localeSelector">
-    <select id="localeSelector" class="form-control" th:value="${selectedLocale}">
-        <option th:each="locale : ${locales}"
-                th:value="*{locale.localeId}"
-                th:text="${locale.languageName +'-'+locale.countryName }"
-                th:selected="${selectedLocale} == ${locale.localeId}"></option>
-    </select>
-</div>
+<th:block th:fragment="localeSelector">
+    <div class="btn-group btn-block">
+        <div th:text="${selectedLocaleLanguageName +'-'+ selectedLocaleCountryName}"
+             class="btn btn-default btn-block custom-select" data-toggle="dropdown">
+        </div>
+        <ul class="dropdown-menu list-inline" role="menu">
+            <li th:each="locale : ${locales}" class="dropdown-item">
+                <a href="#"
+                   th:onclick="'window.NerdDinner.setLocale(\'' + ${locale.localeId} + '\')'"
+                ><span th:class="${'famfamfam-flag-' + locale.countryCode.toLowerCase()}"
+                       class="famfamfam-flag-us"></span><span
+                        th:text="${'&nbsp;'+locale.languageName +'-'+locale.countryName}"></span></a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        (function (ND) {
+            ND.setLocale = function (localeId) {
+                $.cookie('nerd-locale', localeId);
+                location.reload();
+            }
+        })(window.NerdDinner = window.NerdDinner || {})
+    </script>
+    <!--
+        <select id="localeSelector" class="custom-select" th:value="${selectedLocale}">
+            <option
+                    th:each="locale : ${locales}"
+                    th:value="*{locale.localeId}"
+                    th:text="${locale.languageName +'-'+locale.countryName }"
+                    th:selected="${selectedLocale} == ${locale.localeId}"></option>
+        </select>
+        -->
+</th:block>
 
 </body>
 </html>

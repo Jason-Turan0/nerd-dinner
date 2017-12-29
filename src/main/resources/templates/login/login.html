@@ -13,9 +13,9 @@
 
 <section layout:fragment="content">
 
-    <form target="/login" method="post">
+    <form action="/login" method="post">
         <div class="form-group">
-            <label th:text="#{login.login.selectLanguage}"></label>
+            <label th:text="#{login.login.selectLanguage}">Select Language</label>
             <th:block th:replace="fragments/inputs::localeSelector">
             </th:block>
         </div>

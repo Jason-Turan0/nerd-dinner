@@ -35,24 +35,48 @@
             </div>
         </div>
         <div class="form-group">
-            <div th:replace="fragments/inputs::
+
+
+            <th-block th:replace="fragments/inputs::
                                              textInput(
-                                                fieldName='userName',
-                                                field=*{userName},
+                                                fieldName='username',
+                                                field=*{username},
                                                 displayName=#{login.registerAccount.userName},
-                                                placeHolder=#{login.registerAccount.enterUserName})"></div>
+                                                placeHolder=#{login.registerAccount.enterUserName})"></th-block>
+
         </div>
         <div class="form-group">
-            <div class="col-md-8"></div>
-            <div th:replace="fragments/inputs::
+            <div class="form-row">
+                <div class="col-md-8">
+                    <th-block th:replace="fragments/inputs::
                                              textInput(
                                                 fieldName='email',
                                                 field=*{email},
                                                 displayName=#{login.registerAccount.emailAddress},
                                                 placeHolder=#{login.registerAccount.enterEmail},
-                                                type='Email')">
-
+                                                type='Email')"/>
+                </div>
+                <div class="col-md-4">
+                    <label th:text="#{common.phrases.contactType}"></label>
+                    <select
+                            th:classappend="${#fields.hasErrors('selectedContactType')} ? 'is-invalid':''"
+                            th:value="*{selectedContactType}"
+                            name="selectedContactType"
+                            class="form-control">
+                        <option value="">-----</option>
+                        <option th:each="contactType : ${contactTypes}"
+                                th:value="${contactType.value}"
+                                th:text="${contactType.text}"
+                                th:selected="${contactType.value} == *{selectedContactType}">Wireframe
+                        </option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('selectedContactType')}"
+                           th:each="error : ${#fields.errors('selectedContactType')}" th:text="${error}"
+                           class="text-danger"/>
+                </div>
             </div>
+
+
         </div>
         <div class="form-group">
             <div class="form-row">

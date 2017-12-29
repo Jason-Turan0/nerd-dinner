@@ -71,6 +71,8 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
         Locale matched = matches.filter(o -> o.isPresent()).findFirst().get().get();
 
         modelAndView.addObject("locales", supportedLocales);
+        modelAndView.addObject("selectedLocaleCountryName", matched.getCountryName());
+        modelAndView.addObject("selectedLocaleLanguageName", matched.getLanguageName());
         modelAndView.addObject("selectedLocale", matched.getLocaleId());
 
     }
