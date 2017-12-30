@@ -26,9 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(
-                        Paths.Login.forgotPasswordPath,
-                        Paths.Login.registerAccountPath,
-                        Paths.Login.loginPath,
+                        Paths.Login.forgotPassword,
+                        Paths.Login.registerAccount,
+                        Paths.Login.login,
+                        Paths.Login.resetPassword,
                         "/console/**",
                         "/webjars/**").permitAll();
 
@@ -36,9 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage(Paths.Login.loginPath).passwordParameter("password").usernameParameter("username").defaultSuccessUrl("/")
+                .loginPage(Paths.Login.login).passwordParameter("password").usernameParameter("username").defaultSuccessUrl(Paths.Home.index)
                 .and()
-                .logout().logoutSuccessUrl(Paths.Login.loginPath + "?logout")
+                .logout().logoutSuccessUrl(Paths.Login.login + "?logout")
                 .permitAll();
 
         http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();

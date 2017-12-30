@@ -7,9 +7,13 @@ public final class Paths {
 
 
     public static class Login {
-        public static final String forgotPasswordPath = "/forgotPassword";
-        public static final String registerAccountPath = "/registerAccount";
-        public static final String loginPath = "/login";
-        public static final String setLocalePath = "/setLocale";
+        public static final String forgotPassword = "/forgotPassword";
+        public static final String registerAccount = "/registerAccount";
+        public static final String login = "/login";
+        public static final String resetPassword = "/resetPassword";
+    }
+
+    public class Home {
+        public static final String index = "/home";
     }
 }
