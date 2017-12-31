@@ -16,4 +16,21 @@ public final class Paths {
     public class Home {
         public static final String index = "/home";
     }
+
+    public class Account {
+        public static final String index = "/account";
+        public static final String general = index + "/general";
+        public static final String email = index + "/email";
+        public static final String phone = index + "/phone";
+        public static final String address = index + "/address";
+    }
+
+    public class Dinners {
+        public static final String index = "/dinners";
+        public static final String create = index + "/create";
+        public static final String find = index + "/find";
+        public static final String invite = index + "/invite";
+    }
+
+
 }

@@ -8,6 +8,8 @@ import com.dbs.sae.training.nerddinner.model.RegisterAccount;
 import com.dbs.sae.training.nerddinner.model.ResetPassword;
 import com.dbs.sae.training.nerddinner.model.SelectOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,12 +19,10 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,6 +34,7 @@ public class LoginController {
     private final RegisterAccountEventHandler registerAccountEventHandler;
     private final ForgotPasswordEventHandler forgotPasswordEventHandler;
     private final ResetPasswordService resetPasswordService;
+    private final ApplicationContext applicationContext;
 
     @Autowired
     public LoginController(
@@ -42,13 +43,15 @@ public class LoginController {
             RegisterAccountEventHandler registerAccountEventHandler,
             ForgotPasswordEventHandler forgotPasswordEventHandler,
             ResetPasswordValidator resetPasswordValidator,
-            ResetPasswordService resetPasswordService) {
+            ResetPasswordService resetPasswordService,
+            ApplicationContext applicationContext) {
         this.registerAccountValidator = registerAccountValidator;
         this.contactTypeRepository = contactTypeRepository;
         this.registerAccountEventHandler = registerAccountEventHandler;
         this.forgotPasswordEventHandler = forgotPasswordEventHandler;
         this.resetPasswordValidator = resetPasswordValidator;
         this.resetPasswordService = resetPasswordService;
+        this.applicationContext = applicationContext;
     }
 
     @InitBinder("registerAccount")
@@ -101,6 +104,19 @@ public class LoginController {
         }).collect(Collectors.toList());
         return contactTypes;
     }
+
+    @ModelAttribute("avatars")
+    public List<String> avatars() {
+        try {
+            Resource[] avatarImages = applicationContext.getResources("classpath:static/images/avatars/*.svg");
+            List<String> avatarUrls = Arrays.stream(avatarImages).map(r -> "/images/avatars/" + r.getFilename()).collect(Collectors.toList());
+            return avatarUrls;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @GetMapping(Paths.Login.registerAccount)
     public String registerAccount(final RegisterAccount registerAccount, Locale l) {

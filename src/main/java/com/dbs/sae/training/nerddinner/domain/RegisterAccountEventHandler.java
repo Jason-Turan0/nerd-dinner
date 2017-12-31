@@ -37,10 +37,12 @@ public class RegisterAccountEventHandler {
 
         String encodedPassword = passwordEncoder.encode(account.getPassword());
         n.setPassword(encodedPassword);
+        n.setAvatar(account.getAvatar());
         NerdEmail ne = new NerdEmail();
         ne.setLastUpdateDate(Timestamp.from(Instant.now()));
         ne.setEmail(account.getEmail());
         ne.setNerd(n);
+
         ne.setNerdContactType(contactType);
         n.getEmails().add(ne);
         nerdRepository.save(n);

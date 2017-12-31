@@ -1,6 +1,7 @@
 package com.dbs.sae.training.nerddinner.configuration;
 
 import com.dbs.sae.training.nerddinner.data.repositories.LocaleRepository;
+import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Autowired
     LocaleRepository repository;
 
+    @Autowired
+    NerdRepository nerdRepository;
+
     @Bean
     public LocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieThenAcceptHeaderLocaleResolver();
@@ -35,13 +39,20 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public LocalizationInterceptor getLocalizationInterceptor() {
-        LocalizationInterceptor c = new LocalizationInterceptor(repository);
-        return c;
+        LocalizationInterceptor interceptor = new LocalizationInterceptor(repository);
+        return interceptor;
+    }
+
+    @Bean
+    public UserProfileInterceptor getUserProfileInterceptor() {
+        UserProfileInterceptor interceptor = new UserProfileInterceptor(nerdRepository);
+        return interceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getLocalizationInterceptor());
+        registry.addInterceptor(getUserProfileInterceptor());
     }
 
     @Override

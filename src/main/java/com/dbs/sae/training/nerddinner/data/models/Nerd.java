@@ -31,7 +31,10 @@ public class Nerd {
     private String userName;
 
     @Column(name = "PASSWORD_RESET")
-    private String PasswordReset;
+    private String passwordReset;
+
+    @Column(name = "AVATAR")
+    private String avatar;
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<NerdAddress> addresses = new HashSet<NerdAddress>();

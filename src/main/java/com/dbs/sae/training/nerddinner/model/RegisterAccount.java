@@ -27,6 +27,9 @@ public class RegisterAccount {
     @NotEmpty()
     private String confirmPassword;
 
+    @NotEmpty()
+    private String avatar;
+
     @NotNull
     private Integer selectedContactType;
 

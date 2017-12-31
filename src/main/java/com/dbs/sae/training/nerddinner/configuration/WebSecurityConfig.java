@@ -31,9 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         Paths.Login.login,
                         Paths.Login.resetPassword,
                         "/console/**",
-                        "/webjars/**").permitAll();
-
-        http.authorizeRequests()
+                        "/webjars/**",
+                        "/js/**",
+                        "/css/**",
+                        "/images/**"
+                )
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -41,11 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessUrl(Paths.Login.login + "?logout")
                 .permitAll();
-
-        http.authorizeRequests().antMatchers("/resources/**").permitAll().anyRequest().permitAll();
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin().disable();
-
     }
 
     @Override
