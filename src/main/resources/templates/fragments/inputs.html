@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="textInput(fieldName, field, displayName, placeHolder)">
+<th:block th:fragment="textInput(fieldName, field, displayName, placeHolder)">
     <label th:text="${displayName}"></label>
     <input
             class="form-control"
@@ -12,20 +12,36 @@
             th:name="${fieldName}"
             th:placeholder="${placeHolder}"/>
     <small th:if="${#fields.hasErrors(fieldName)}" th:each="error : ${#fields.errors(fieldName)}" th:text="${error}"
-           class="text-danger"/>
-</div>
-<th:block th:fragment="localeSelector">
+           class="text-danger"></small>
+</th:block>
+<th:block th:fragment="textArea(fieldName, field, displayName, placeHolder)">
+    <label th:text="${displayName}"></label>
+    <textarea
+            class="form-control"
+            th:classappend="${#fields.hasErrors(fieldName)} ? 'is-invalid':''"
+            th:id="${fieldName}"
+            th:value="${field}"
+            th:text="${field}"
+            th:name="${fieldName}"
+            th:placeholder="${placeHolder}"
+            th:rows="${rows ?: ''}"
+    ></textarea>
+    <small th:if="${#fields.hasErrors(fieldName)}" th:each="error : ${#fields.errors(fieldName)}" th:text="${error}"
+           class="text-danger"></small>
+</th:block>
+<th:block th:fragment="localeSelector(width)">
     <div class="btn-group btn-block">
-        <div class="btn btn-default btn-block custom-select" data-toggle="dropdown">
+        <div class="btn custom-select" th:style="'cursor:pointer;width:'+${width}+';'" style="cursor:pointer"
+             data-toggle="dropdown">
             <span th:class="${'famfamfam-flag-' + selectedLocale.countryCode.toLowerCase()}"></span>
             <span th:text="${'&nbsp;' + selectedLocale.languageName +'-'+ selectedLocale.countryName}"></span>
         </div>
-        <ul class="dropdown-menu list-inline" role="menu">
-            <li th:each="locale : ${locales}" class="dropdown-item">
+        <ul class="dropdown-menu list-inline">
+            <li th:each="locale : ${locales}" style="padding:.25rem 1.5rem">
                 <a href="#"
-                   th:onclick="'window.NerdDinner.setLocale(\'' + ${locale.localeId} + '\')'"
-                ><span th:class="${'famfamfam-flag-' + locale.countryCode.toLowerCase()}"
-                       class="famfamfam-flag-us"></span><span
+                   th:onclick="'window.NerdDinner.setLocale(\'' + ${locale.localeId} + '\')'"><span
+                        th:class="${'famfamfam-flag-' + locale.countryCode.toLowerCase()}"
+                        class="famfamfam-flag-us"></span><span
                         th:text="${'&nbsp;'+locale.languageName +'-'+locale.countryName}"></span></a>
             </li>
         </ul>

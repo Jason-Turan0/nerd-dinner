@@ -9,7 +9,6 @@ import com.dbs.sae.training.nerddinner.model.ResetPassword;
 import com.dbs.sae.training.nerddinner.model.SelectOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -88,33 +86,26 @@ public class LoginController {
     @ModelAttribute("contactTypes")
     public List<SelectOption> contactTypes(Locale l) {
         List<NerdContactType> contactTypeList = contactTypeRepository.findAll();
-        String requestedLanguage = l.getLanguage();
-        String requestedCountry = l.getCountry();
-        List<SelectOption> contactTypes = contactTypeList.stream().map(ct -> {
-            Optional<NerdContactTypeDescription> description = ct
-                    .getDescriptions()
-                    .stream()
-                    .filter(d -> d.getLocale().getLanguageCode().equalsIgnoreCase(requestedLanguage) && (
-                            d.getLocale().getCountryCode().equalsIgnoreCase(requestedCountry) || requestedCountry.isEmpty()))
-                    .findFirst();
-            SelectOption o = new SelectOption();
-            o.setValue(ct.getNerdContactTypePk());
-            o.setText(description.isPresent() ? description.get().getDescription() : "");
-            return o;
-        }).collect(Collectors.toList());
+
+        List<SelectOption> contactTypes = contactTypeList.stream()
+                .map(ct -> {
+                    SelectOption o = new SelectOption();
+                    String requestedLanguage = l.getLanguage();
+                    Set<NerdContactTypeDescription> v = ct.getDescriptions().stream().collect(Collectors.toSet());
+                    Optional<NerdContactTypeDescription> description = v
+                            .stream()
+                            .filter(d -> d.getLanguage().getLanguageCode().equalsIgnoreCase(requestedLanguage))
+                            .findFirst();
+                    o.setValue(ct.getNerdContactTypePk());
+                    o.setText(description.isPresent() ? description.get().getDescription() : "");
+                    return o;
+                }).collect(Collectors.toList());
         return contactTypes;
     }
 
     @ModelAttribute("avatars")
     public List<String> avatars() {
-        try {
-            Resource[] avatarImages = applicationContext.getResources("classpath:static/images/avatars/*.svg");
-            List<String> avatarUrls = Arrays.stream(avatarImages).map(r -> "/images/avatars/" + r.getFilename()).collect(Collectors.toList());
-            return avatarUrls;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return ControllerExtensions.getAvatarUrls(applicationContext);
     }
 
 

@@ -8,6 +8,7 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
     display: inline-block;
     vertical-align: top;
+    cursor: pointer;
 }
 
 .overlay {
@@ -49,6 +50,8 @@
 .largeAvatarContainer {
     width: 128px;
     height: 128px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .avatarImage {

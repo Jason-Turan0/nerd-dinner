@@ -8,13 +8,135 @@
 <body>
 <ol class="breadcrumb" layout:fragment="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="/">Dashboard</a>
+        <a th:text="#{common.layout.home}" th:href="@{/}">Home</a>
     </li>
-    <li class="breadcrumb-item active">Home</li>
+    <li th:text="#{common.layout.editAccount}" class="breadcrumb-item active">Edit Account</li>
+    <li th:text="#{common.layout.general}" class="breadcrumb-item active">General</li>
 </ol>
 <section layout:fragment="content">
-    <h1 th:inline="text">Hello [[${nerdProfile.fullName}]]!</h1>
-    <p>This is a paragraph from general</p>
+    <div class="alert alert-success" th:if="${param.saveSuccessful}" th:text="#{common.phrases.saveSuccessful}">
+
+    </div>
+    <form th:action="@{/account/general}" th:object="${generalNerdSettings}"
+          method="post">
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                textInput(
+                                    fieldName='firstName',
+                                    field=*{firstName},
+                                    displayName= #{login.registerAccount.firstName},
+                                    placeHolder= #{login.registerAccount.enterFirstName})"></div>
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='lastName',
+                                                field=*{lastName},
+                                                displayName=#{login.registerAccount.lastName},
+                                                placeHolder=#{login.registerAccount.enterLastName})"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <th-block th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='username',
+                                                field=*{username},
+                                                displayName=#{login.registerAccount.userName},
+                                                placeHolder=#{login.registerAccount.enterUserName})"></th-block>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='password',
+                                                field=*{password},
+                                                displayName=#{account.general.changePassword},
+                                                placeHolder=#{account.general.changePassword},
+                                                type='Password')"></div>
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='confirmPassword',
+                                                field=*{confirmPassword},
+                                                displayName=#{account.general.confirmChangePassword},
+                                                placeHolder=#{account.general.confirmChangePassword},
+                                                type='Password')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='company',
+                                                field=*{company},
+                                                displayName=#{account.general.company},
+                                                placeHolder=#{account.general.company})"></div>
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='title',
+                                                field=*{title},
+                                                displayName=#{account.general.title},
+                                                placeHolder=#{account.general.title})"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div th:replace="fragments/inputs::
+                                             textArea(
+                                                fieldName='biography',
+                                                field=*{biography},
+                                                displayName=#{account.general.biography},
+                                                placeHolder=#{account.general.biography},
+                                                rows=10)"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label th:text="#{login.registerAccount.selectAvatar}"></label>
+                    <small th:if="${#fields.hasErrors('avatar')}" th:each="error : ${#fields.errors('avatar')}"
+                           th:text="${error}" class="text-danger"></small>
+                    <input type="hidden" th:field="*{avatar}"/>
+                    <div class="avatarContainer largeAvatarContainer">
+                        <img class="avatarImage largeAvatarImage" id="avatarImage" th:src="*{avatar}"/>
+                    </div>
+                    <th:block th:each="avatarSrc : ${avatars}">
+                        <div class="selectAvatarBox overlay"
+                             th:onclick="'window.NerdDinner.setAvatar(\'' + ${avatarSrc} + '\')'">
+                            <img class="avatarImage" th:src="${avatarSrc}"/>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" th:text="#{common.phrases.save}"
+                type="submit"></button>
+
+    </form>
 </section>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+        (function (ND) {
+            ND.setAvatar = function (avatarSrc) {
+                $('#avatar').val(avatarSrc);
+                $('#avatarImage').attr("src", avatarSrc).css("display", "block");
+            }
+        })(window.NerdDinner = window.NerdDinner || {})
+    </script>
+</th:block>
 </body>
 </html>

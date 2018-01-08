@@ -20,24 +20,29 @@ public class NerdProfile {
     private final String avatar;
 
     @Getter
-    private String email = "";
+    private final String email;
+
+    @Getter
+    private final String userName;
+
+    @Getter
+    private Integer nerdPk;
 
     public NerdProfile(Nerd nerd) {
         firstName = getValueOrEmpty(nerd, n -> n.getFirstName());
         lastName = getValueOrEmpty(nerd, n -> n.getLastName());
         fullName = String.format("%s %s", firstName, lastName);
         avatar = getValueOrEmpty(nerd, n -> n.getAvatar());
-
-        if (nerd.getEmails().size() > 0) {
-            this.email = nerd.getEmails().stream().findFirst().get().getEmail();
-        }
-
+        userName = getValueOrEmpty(nerd, n -> nerd.getUserName());
+        nerdPk = getValueOrEmpty(nerd, n -> nerd.getNerdPk());
+        email = nerd != null && nerd.getEmails().size() > 0 ?
+                nerd.getEmails().stream().findFirst().get().getEmail() :
+                "";
     }
 
-    private String getValueOrEmpty(Nerd n, Function<Nerd, String> accessor) {
-        if (n == null) return "";
+    private <T> T getValueOrEmpty(Nerd n, Function<Nerd, T> accessor) {
+        if (n == null) return null;
         return accessor.apply(n);
     }
-
 
 }

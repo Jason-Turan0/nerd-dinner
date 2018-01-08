@@ -1,6 +1,9 @@
 package com.dbs.sae.training.nerddinner.configuration;
 
-import com.dbs.sae.training.nerddinner.data.models.Locale;
+import com.dbs.sae.training.nerddinner.data.models.Country;
+import com.dbs.sae.training.nerddinner.data.models.CountryDescription;
+import com.dbs.sae.training.nerddinner.data.models.Language;
+import com.dbs.sae.training.nerddinner.data.models.LocaleViewModel;
 import com.dbs.sae.training.nerddinner.data.repositories.LocaleRepository;
 import org.javatuples.Pair;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,13 +53,25 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
                         .sorted((p0, p1) -> Float.compare(p1.getValue1(), p0.getValue1()))
                         .collect(Collectors.toList());
 
-        List<Locale> supportedLocales = localeRepository.findAll();
-        Stream<Optional<Locale>> cookieMatches = Stream.of(
+        List<LocaleViewModel> supportedLocales = localeRepository.findAll().stream().map(l -> {
+            LocaleViewModel lvm = new LocaleViewModel();
+            Country c = l.getCountry();
+            Language la = l.getLanguage();
+            Optional<CountryDescription> countryDescription = c.getDescriptions().stream().filter(cd -> cd.getLanguage().getLanguageCode() == la.getLanguageCode()).findFirst();
+            lvm.setCountryCode(c.getCountryCode());
+            lvm.setCountryName(countryDescription.isPresent() ? countryDescription.get().getCountryName() : "");
+            lvm.setLanguageCode(la.getLanguageCode());
+            lvm.setLanguageName(la.getLanguageName());
+            lvm.setLocaleId(l.getLocaleId());
+            return lvm;
+        }).collect(Collectors.toList());
+
+        Stream<Optional<LocaleViewModel>> cookieMatches = Stream.of(
                 supportedLocales.stream().filter(l -> l.getLocaleId().equals(localCookieValue)).findFirst(),
                 supportedLocales.stream().filter(l -> l.getLanguageCode().equals(localCookieValue)).findFirst(),
                 supportedLocales.stream().filter(l -> l.getCountryCode().equals(localCookieValue)).findFirst()
         );
-        Stream<Optional<Locale>> languageMatches =
+        Stream<Optional<LocaleViewModel>> languageMatches =
                 languages.stream()
                         .flatMap(p ->
                                 Stream.of(
@@ -64,14 +79,12 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
                                         supportedLocales.stream().filter(l -> l.getLanguageCode().equals(p.getValue0())).findFirst(),
                                         supportedLocales.stream().filter(l -> l.getCountryCode().equals(p.getValue0())).findFirst()));
 
-        Stream<Optional<Locale>> defaultLocale = Stream.of(
+        Stream<Optional<LocaleViewModel>> defaultLocale = Stream.of(
                 supportedLocales.stream().filter(l -> l.getLocaleId().equals("en_US")).findFirst());
-        Stream<Optional<Locale>> matches = Stream.concat(
+        Stream<Optional<LocaleViewModel>> matches = Stream.concat(
                 Stream.concat(cookieMatches, languageMatches),
                 defaultLocale);
-
-        Locale matched = matches.filter(o -> o.isPresent()).findFirst().get().get();
-
+        LocaleViewModel matched = matches.filter(o -> o.isPresent()).findFirst().get().get();
         modelAndView.addObject("locales", supportedLocales);
         modelAndView.addObject("selectedLocale", matched);
 

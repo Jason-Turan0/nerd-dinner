@@ -40,9 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage(Paths.Login.login).passwordParameter("password").usernameParameter("username").defaultSuccessUrl(Paths.Home.index)
+                .loginPage(Paths.Login.login)
+                .passwordParameter("password")
+                .usernameParameter("username")
+                .defaultSuccessUrl(Paths.Home.index)
                 .and()
-                .logout().logoutSuccessUrl(Paths.Login.login + "?logout")
+                .logout()
+                .logoutSuccessHandler(new LogoutSuccessHandlerImpl())
                 .permitAll();
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin().disable();

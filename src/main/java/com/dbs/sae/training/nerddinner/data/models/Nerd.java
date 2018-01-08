@@ -33,6 +33,15 @@ public class Nerd {
     @Column(name = "PASSWORD_RESET")
     private String passwordReset;
 
+    @Column(name = "TITLE")
+    private String title;
+
+    @Column(name = "COMPANY")
+    private String company;
+
+    @Column(name = "BIOGRAPHY")
+    private String biography;
+
     @Column(name = "AVATAR")
     private String avatar;
 

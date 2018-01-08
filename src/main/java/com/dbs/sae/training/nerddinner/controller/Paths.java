@@ -2,6 +2,7 @@ package com.dbs.sae.training.nerddinner.controller;
 
 public final class Paths {
 
+
     private Paths() {
     }
 
@@ -11,9 +12,11 @@ public final class Paths {
         public static final String registerAccount = "/registerAccount";
         public static final String login = "/login";
         public static final String resetPassword = "/resetPassword";
+        public static final String logout = "/logout";
     }
 
     public class Home {
+        public static final String defaultPage = "/";
         public static final String index = "/home";
     }
 
