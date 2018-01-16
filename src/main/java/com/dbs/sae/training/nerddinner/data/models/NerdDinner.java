@@ -17,11 +17,6 @@ public class NerdDinner {
     @Column(name = "NERD_DINNER_PK")
     private Integer nerdDinnerPk;
 
-    @Column(name = "TITLE")
-    private String title;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
     @Column(name = "DINNER_DATE")
     private Timestamp dinnerDate;
 

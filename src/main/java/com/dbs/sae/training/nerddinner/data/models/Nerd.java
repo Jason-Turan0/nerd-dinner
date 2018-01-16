@@ -33,15 +33,6 @@ public class Nerd {
     @Column(name = "PASSWORD_RESET")
     private String passwordReset;
 
-    @Column(name = "TITLE")
-    private String title;
-
-    @Column(name = "COMPANY")
-    private String company;
-
-    @Column(name = "BIOGRAPHY")
-    private String biography;
-
     @Column(name = "AVATAR")
     private String avatar;
 
@@ -56,6 +47,9 @@ public class Nerd {
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL)
     private Set<NerdDinnerReservation> dinnersReservations = new HashSet<NerdDinnerReservation>();
+
+    @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<NerdDescription> nerdDescriptions = new HashSet<NerdDescription>();
 
     @Override
     public boolean equals(Object o) {

@@ -33,11 +33,10 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response,
             Object handler,
             ModelAndView modelAndView) throws Exception {
-        if (request == null) return;
-
-        Optional<Cookie> localeCookie = Arrays.stream(request.getCookies()).filter(c -> c.getName().equalsIgnoreCase("nerd-locale")).findFirst();
+        Cookie[] cookies = request == null ? new Cookie[0] : request.getCookies();
+        Optional<Cookie> localeCookie = Arrays.stream(cookies == null ? new Cookie[0] : cookies).filter(c -> c.getName().equalsIgnoreCase("nerd-locale")).findFirst();
         String localCookieValue = localeCookie.isPresent() ? localeCookie.get().getValue() : "";
-        String language = request.getHeader("Accept-Language");
+        String language = request == null ? null : request.getHeader("Accept-Language");
         List<Pair<String, Float>> languages = language == null || language.trim().isEmpty() ?
                 new ArrayList<>() :
                 Arrays.stream(language.split(","))

@@ -19,7 +19,7 @@ public class StringExtensions {
         return true;
     }
 
-    public static String UrlEncode(String value) {
+    public static String urlEncode(String value) {
         try {
             return URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {

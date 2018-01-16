@@ -21,4 +21,5 @@ public class GeneralNerdSettings {
 
     @NotEmpty()
     private String avatar;
+
 }

@@ -19,91 +19,92 @@
     </div>
     <form th:action="@{/account/general}" th:object="${generalNerdSettings}"
           method="post">
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                textInput(
-                                    fieldName='firstName',
-                                    field=*{firstName},
-                                    displayName= #{login.registerAccount.firstName},
-                                    placeHolder= #{login.registerAccount.enterFirstName})"></div>
-                </div>
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='lastName',
-                                                field=*{lastName},
-                                                displayName=#{login.registerAccount.lastName},
-                                                placeHolder=#{login.registerAccount.enterLastName})"></div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <th-block th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='username',
-                                                field=*{username},
-                                                displayName=#{login.registerAccount.userName},
-                                                placeHolder=#{login.registerAccount.enterUserName})"></th-block>
-        </div>
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='password',
-                                                field=*{password},
-                                                displayName=#{account.general.changePassword},
-                                                placeHolder=#{account.general.changePassword},
-                                                type='Password')"></div>
-                </div>
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='confirmPassword',
-                                                field=*{confirmPassword},
-                                                displayName=#{account.general.confirmChangePassword},
-                                                placeHolder=#{account.general.confirmChangePassword},
-                                                type='Password')"></div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='company',
-                                                field=*{company},
-                                                displayName=#{account.general.company},
-                                                placeHolder=#{account.general.company})"></div>
-                </div>
-                <div class="col-md-6">
-                    <div th:replace="fragments/inputs::
-                                             textInput(
-                                                fieldName='title',
-                                                field=*{title},
-                                                displayName=#{account.general.title},
-                                                placeHolder=#{account.general.title})"></div>
-                </div>
-            </div>
-        </div>
+        <!-- <div class="form-group">
+             <div class="form-row">
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                 textInput(
+                                     fieldName='firstName',
+                                     field=*{firstName},
+                                     displayName= #{login.registerAccount.firstName},
+                                     placeHolder= #{login.registerAccount.enterFirstName})"></div>
+                 </div>
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='lastName',
+                                                 field=*{lastName},
+                                                 displayName=#{login.registerAccount.lastName},
+                                                 placeHolder=#{login.registerAccount.enterLastName})"></div>
+                 </div>
+             </div>
+         </div>
+         <div class="form-group">
+             <th-block th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='username',
+                                                 field=*{username},
+                                                 displayName=#{login.registerAccount.userName},
+                                                 placeHolder=#{login.registerAccount.enterUserName})"></th-block>
+         </div>
+         <div class="form-group">
+             <div class="form-row">
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='password',
+                                                 field=*{password},
+                                                 displayName=#{account.general.changePassword},
+                                                 placeHolder=#{account.general.changePassword},
+                                                 type='Password')"></div>
+                 </div>
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='confirmPassword',
+                                                 field=*{confirmPassword},
+                                                 displayName=#{account.general.confirmChangePassword},
+                                                 placeHolder=#{account.general.confirmChangePassword},
+                                                 type='Password')"></div>
+                 </div>
+             </div>
+         </div>-->
+        <th:block th:each="description , stat : ${descriptions.descriptions}" style="padding:.25rem 1.5rem">
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-6">
 
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-12">
-                    <div th:replace="fragments/inputs::
-                                             textArea(
-                                                fieldName='biography',
-                                                field=*{biography},
-                                                displayName=#{account.general.biography},
-                                                placeHolder=#{account.general.biography},
-                                                rows=10)"></div>
+
+                        <label th:text="${'Title:' + description.languageName }"></label>
+                        <input
+                                class="form-control"
+                                th:type="Text"
+                                th:value="${description.title}"
+                                th:name="|descriptions[${stat.index}].title|"
+                                th:placeholder="${'Title:' + description.languageName}"/>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
+
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <!-- <div th:replace="fragments/inputs::
+                                              textArea(
+                                                 fieldName='biography',
+                                                 field=*{biography},
+                                                 displayName=#{account.general.biography},
+                                                 placeHolder=#{account.general.biography},
+                                                 rows=10)"></div>-->
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+        <!--<div class="form-group">
             <div class="form-row">
                 <div class="col-md-12">
                     <label th:text="#{login.registerAccount.selectAvatar}"></label>
@@ -121,7 +122,7 @@
                     </th:block>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <button class="btn btn-primary btn-block" th:text="#{common.phrases.save}"
                 type="submit"></button>
