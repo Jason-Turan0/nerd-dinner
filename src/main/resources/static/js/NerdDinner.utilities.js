@@ -3,4 +3,5 @@
         $.cookie('nerd-locale', localeId);
         location.reload();
     }
+
 })(window.NerdDinner = window.NerdDinner || {});

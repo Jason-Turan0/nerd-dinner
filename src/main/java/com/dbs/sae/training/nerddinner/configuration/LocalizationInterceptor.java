@@ -33,6 +33,8 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response,
             Object handler,
             ModelAndView modelAndView) throws Exception {
+        if (modelAndView == null) return;
+
         Cookie[] cookies = request == null ? new Cookie[0] : request.getCookies();
         Optional<Cookie> localeCookie = Arrays.stream(cookies == null ? new Cookie[0] : cookies).filter(c -> c.getName().equalsIgnoreCase("nerd-locale")).findFirst();
         String localCookieValue = localeCookie.isPresent() ? localeCookie.get().getValue() : "";
@@ -84,8 +86,11 @@ public class LocalizationInterceptor extends HandlerInterceptorAdapter {
                 Stream.concat(cookieMatches, languageMatches),
                 defaultLocale);
         LocaleViewModel matched = matches.filter(o -> o.isPresent()).findFirst().get().get();
+
+
         modelAndView.addObject("locales", supportedLocales);
         modelAndView.addObject("selectedLocale", matched);
+
 
     }
 }

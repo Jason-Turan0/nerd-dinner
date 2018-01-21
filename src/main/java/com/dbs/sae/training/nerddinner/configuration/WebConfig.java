@@ -37,6 +37,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return localeResolver;
     }
 
+
     @Bean
     public LocalizationInterceptor getLocalizationInterceptor() {
         LocalizationInterceptor interceptor = new LocalizationInterceptor(repository);

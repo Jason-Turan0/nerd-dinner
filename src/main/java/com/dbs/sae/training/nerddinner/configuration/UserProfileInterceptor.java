@@ -22,12 +22,13 @@ public class UserProfileInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response,
             Object handler,
             ModelAndView modelAndView) throws Exception {
+        if (modelAndView == null) return;
+
         Nerd nerd = null;
         if (request != null) {
             String userName = request.getRemoteUser();
             nerd = nerdRepository.findOneByPropertyValue(Nerd.class, userName, (n, un) -> n.setUserName(un));
         }
-
         modelAndView.addObject("nerdProfile", new NerdProfile(nerd));
     }
 }
