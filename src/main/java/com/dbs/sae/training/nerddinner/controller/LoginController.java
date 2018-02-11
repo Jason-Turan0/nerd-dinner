@@ -1,7 +1,5 @@
 package com.dbs.sae.training.nerddinner.controller;
 
-import com.dbs.sae.training.nerddinner.data.models.NerdContactType;
-import com.dbs.sae.training.nerddinner.data.models.NerdContactTypeDescription;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdContactTypeRepository;
 import com.dbs.sae.training.nerddinner.domain.*;
 import com.dbs.sae.training.nerddinner.model.RegisterAccount;
@@ -20,7 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -85,22 +85,7 @@ public class LoginController {
 
     @ModelAttribute("contactTypes")
     public List<SelectOption> contactTypes(Locale l) {
-        List<NerdContactType> contactTypeList = contactTypeRepository.findAll();
-
-        List<SelectOption> contactTypes = contactTypeList.stream()
-                .map(ct -> {
-                    SelectOption o = new SelectOption();
-                    String requestedLanguage = l.getLanguage();
-                    Set<NerdContactTypeDescription> v = ct.getDescriptions().stream().collect(Collectors.toSet());
-                    Optional<NerdContactTypeDescription> description = v
-                            .stream()
-                            .filter(d -> d.getLanguage().getLanguageCode().equalsIgnoreCase(requestedLanguage))
-                            .findFirst();
-                    o.setValue(ct.getNerdContactTypePk());
-                    o.setText(description.isPresent() ? description.get().getDescription() : "");
-                    return o;
-                }).collect(Collectors.toList());
-        return contactTypes;
+        return ControllerExtensions.getContactTypesAsSelectOptions(contactTypeRepository, l);
     }
 
     @ModelAttribute("avatars")

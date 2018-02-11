@@ -140,7 +140,7 @@
 
         </div>
 
-        <div class="btn btn-primary btn-block" th:text="#{common.phrases.save}"
+        <div class="btn btn-primary" th:text="#{common.phrases.save}"
              th:onclick="'window.NerdDinner.submitForm(this);'"></div>
     </form>
 </section>
@@ -153,7 +153,10 @@
             };
             var rulesData = /*[[${generalNerdSettingsForm.validationRules}]]*/"";
             var rules = JSON.parse(rulesData);
-            window.NerdDinner.initilizeForm($('[name="generalNerdSettings"]')[0], rules)
+            window.NerdDinner.initializeForm({
+                form: $('[name="generalNerdSettings"]')[0],
+                rules: rules
+            });
         })(window.NerdDinner = window.NerdDinner || {});
 
     </script>

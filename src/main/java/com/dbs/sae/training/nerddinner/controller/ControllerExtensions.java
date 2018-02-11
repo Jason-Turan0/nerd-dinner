@@ -1,11 +1,14 @@
 package com.dbs.sae.training.nerddinner.controller;
 
+import com.dbs.sae.training.nerddinner.data.models.NerdContactType;
+import com.dbs.sae.training.nerddinner.data.models.NerdContactTypeDescription;
+import com.dbs.sae.training.nerddinner.data.repositories.NerdContactTypeRepository;
+import com.dbs.sae.training.nerddinner.model.SelectOption;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ControllerExtensions {
@@ -18,5 +21,23 @@ public class ControllerExtensions {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<SelectOption> getContactTypesAsSelectOptions(NerdContactTypeRepository contactTypeRepository, Locale l) {
+        List<NerdContactType> contactTypeList = contactTypeRepository.findAll();
+        List<SelectOption> contactTypes = contactTypeList.stream()
+                .map(ct -> {
+                    SelectOption o = new SelectOption();
+                    String requestedLanguage = l.getLanguage();
+                    Set<NerdContactTypeDescription> v = ct.getDescriptions().stream().collect(Collectors.toSet());
+                    Optional<NerdContactTypeDescription> description = v
+                            .stream()
+                            .filter(d -> d.getLanguage().getLanguageCode().equalsIgnoreCase(requestedLanguage))
+                            .findFirst();
+                    o.setValue(ct.getNerdContactTypePk());
+                    o.setText(description.isPresent() ? description.get().getDescription() : "");
+                    return o;
+                }).collect(Collectors.toList());
+        return contactTypes;
     }
 }

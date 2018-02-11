@@ -19,6 +19,9 @@ public class NerdEmail {
     @JoinColumn(name = "NERD_FK")
     private Nerd nerd;
 
+    @Column(name = "NERD_FK", insertable = false, updatable = false)
+    private Integer nerdFk;
+
     @OneToOne
     @JoinColumn(name = "NERD_CONTACT_TYPE_FK")
     private NerdContactType nerdContactType;

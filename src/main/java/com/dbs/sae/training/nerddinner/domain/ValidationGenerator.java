@@ -1,11 +1,14 @@
 package com.dbs.sae.training.nerddinner.domain;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -52,7 +55,10 @@ public class ValidationGenerator {
     private static List<Class<?>> getSupportedAnnotations() {
         return Arrays.asList(
                 NotEmpty.class,
-                Size.class
+                Size.class,
+                NotNull.class,
+                Email.class,
+                Pattern.class
         );
     }
 
@@ -124,6 +130,15 @@ public class ValidationGenerator {
             Size s = (Size) a;
             String message = getMessageFromResourceBundle(s.message());
             return String.format(message, s.min(), s.max());
+        } else if (a instanceof NotNull) {
+            NotNull ne = (NotNull) a;
+            return getMessageFromResourceBundle(ne.message());
+        } else if (a instanceof Email) {
+            Email ne = (Email) a;
+            return getMessageFromResourceBundle(ne.message());
+        } else if (a instanceof Pattern) {
+            Pattern p = (Pattern) a;
+            return getMessageFromResourceBundle(p.message());
         } else {
             throw new NotImplementedException();
         }
@@ -147,6 +162,13 @@ public class ValidationGenerator {
             ja.put(s.min());
             ja.put(s.max());
             return ja;
+        } else if (a instanceof NotNull) {
+            return true;
+        } else if (a instanceof Email) {
+            return true;
+        } else if (a instanceof Pattern) {
+            Pattern p = (Pattern) a;
+            return p.regexp();
         } else {
             throw new NotImplementedException();
         }
@@ -157,6 +179,12 @@ public class ValidationGenerator {
             return "required";
         } else if (a instanceof Size) {
             return "rangelength";
+        } else if (a instanceof NotNull) {
+            return "required";
+        } else if (a instanceof Email) {
+            return "email";
+        } else if (a instanceof Pattern) {
+            return "regex";
         } else {
             throw new NotImplementedException();
         }
@@ -169,7 +197,7 @@ public class ValidationGenerator {
                 .filter(m -> m.getName().startsWith("get") && fieldExistsForMethod(m))
                 .collect(Collectors.toList());
         Class<?> c = withValidation.getClass();
-        String acessorPath = parentPath.trim().isEmpty() ? "" : parentPath + ".";
+        String accessorPath = parentPath.trim().isEmpty() ? "" : parentPath + ".";
         for (Method m : methods) {
             Class<?> returnType = m.getReturnType();
             String name = m.getName().replace("get", "");
@@ -177,18 +205,26 @@ public class ValidationGenerator {
             Field f = GetField(c, fieldName);
             List<Annotation> validationAnnotations = Arrays.stream(f.getAnnotations()).filter(a -> isSupportedAnnotation(a.annotationType())).collect(Collectors.toList());
             if (isPrimitiveType(returnType)) {
-                String currentPath = String.format("%s%s", acessorPath, fieldName);
+                String currentPath = String.format("%s%s", accessorPath, fieldName);
                 paths.add(new FieldPath(currentPath, validationAnnotations));
             } else if (isIterable(returnType)) {
                 List<Object> items = StreamSupport.stream(((Iterable<Object>) GetFieldValue(m, withValidation)).spliterator(), false).collect(Collectors.toList());
                 for (Integer i = 0; i < items.size(); i++) {
                     Object item = items.get(i);
-                    String currentPath = String.format("%s%s[%s]", acessorPath, fieldName, i);
+                    String currentPath = String.format("%s%s[%s]", accessorPath, fieldName, i);
+                    if (item == null || isPrimitiveType(item.getClass())) continue;
+                    SearchForPathsWithAnnotations(item, paths, currentPath);
+                }
+            } else if (returnType.isAssignableFrom(Map.class)) {
+                Map<Object, Object> map = (Map<Object, Object>) GetFieldValue(m, withValidation);
+                for (Object key : map.keySet()) {
+                    Object item = map.get(key);
+                    String currentPath = String.format("%s%s[%s]", accessorPath, fieldName, key.toString());
                     if (item == null || isPrimitiveType(item.getClass())) continue;
                     SearchForPathsWithAnnotations(item, paths, currentPath);
                 }
             } else {
-                String currentPath = String.format("%s%s", acessorPath, fieldName);
+                String currentPath = String.format("%s%s", accessorPath, fieldName);
                 Object item = GetFieldValue(m, withValidation);
                 SearchForPathsWithAnnotations(item, paths, currentPath);
             }
