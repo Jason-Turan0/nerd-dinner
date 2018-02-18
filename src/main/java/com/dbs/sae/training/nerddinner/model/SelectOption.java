@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SelectOption {
-    private Integer value;
+    private String value;
     private String text;
 }

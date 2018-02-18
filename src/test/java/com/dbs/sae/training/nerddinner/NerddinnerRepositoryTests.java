@@ -80,10 +80,10 @@ public class NerddinnerRepositoryTests {
 
 		NerdAddress na = new NerdAddress();
 		na.setAddress(homeAddress);
-		na.setExpired_Date(null);
-		na.setNerd_Contact_Type(ct);
-		na.setLast_Update_Date(new Timestamp(System.currentTimeMillis()));
-		na.setNerd(n);
+        na.setExpiredDate(null);
+        na.setNerdContactType(ct);
+        na.setLastUpdateDate(new Timestamp(System.currentTimeMillis()));
+        na.setNerd(n);
 		return na;
 	}
 

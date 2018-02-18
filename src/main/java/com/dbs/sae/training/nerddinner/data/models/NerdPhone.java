@@ -36,7 +36,7 @@ public class NerdPhone {
     private String centralOfficePrefix;
 
     @Column(name="LINE_NUMBER")
-    private String LineNumber;
+    private String lineNumber;
 
     @Override
     public boolean equals(Object o) {

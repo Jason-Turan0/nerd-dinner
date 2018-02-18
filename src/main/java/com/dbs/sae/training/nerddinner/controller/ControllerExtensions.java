@@ -34,7 +34,7 @@ public class ControllerExtensions {
                             .stream()
                             .filter(d -> d.getLanguage().getLanguageCode().equalsIgnoreCase(requestedLanguage))
                             .findFirst();
-                    o.setValue(ct.getNerdContactTypePk());
+                    o.setValue(ct.getNerdContactTypePk().toString());
                     o.setText(description.isPresent() ? description.get().getDescription() : "");
                     return o;
                 }).collect(Collectors.toList());

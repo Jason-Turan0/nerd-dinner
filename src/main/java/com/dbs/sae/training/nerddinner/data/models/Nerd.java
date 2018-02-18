@@ -37,19 +37,22 @@ public class Nerd {
     private String avatar;
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<NerdAddress> addresses = new HashSet<NerdAddress>();
+    private Set<NerdAddress> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<NerdEmail> emails = new HashSet<NerdEmail>();
+    private Set<NerdEmail> emails = new HashSet<>();
+
+    @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<NerdPhone> phones = new HashSet<>();
 
     @OneToMany(mappedBy = "creatorNerd", cascade = CascadeType.ALL)
-    private Set<NerdDinner> createdDinners = new HashSet<NerdDinner>();
+    private Set<NerdDinner> createdDinners = new HashSet<>();
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL)
-    private Set<NerdDinnerReservation> dinnersReservations = new HashSet<NerdDinnerReservation>();
+    private Set<NerdDinnerReservation> dinnersReservations = new HashSet<>();
 
     @OneToMany(mappedBy = "nerd", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<NerdDescription> nerdDescriptions = new HashSet<NerdDescription>();
+    private Set<NerdDescription> nerdDescriptions = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

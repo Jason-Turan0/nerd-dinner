@@ -209,6 +209,7 @@ public class ValidationGenerator {
                 paths.add(new FieldPath(currentPath, validationAnnotations));
             } else if (isIterable(returnType)) {
                 List<Object> items = StreamSupport.stream(((Iterable<Object>) GetFieldValue(m, withValidation)).spliterator(), false).collect(Collectors.toList());
+                if (items == null) return;
                 for (Integer i = 0; i < items.size(); i++) {
                     Object item = items.get(i);
                     String currentPath = String.format("%s%s[%s]", accessorPath, fieldName, i);
@@ -217,6 +218,8 @@ public class ValidationGenerator {
                 }
             } else if (returnType.isAssignableFrom(Map.class)) {
                 Map<Object, Object> map = (Map<Object, Object>) GetFieldValue(m, withValidation);
+                if (map == null) return;
+
                 for (Object key : map.keySet()) {
                     Object item = map.get(key);
                     String currentPath = String.format("%s%s[%s]", accessorPath, fieldName, key.toString());

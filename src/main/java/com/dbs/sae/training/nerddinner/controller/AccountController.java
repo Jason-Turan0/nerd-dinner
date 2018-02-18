@@ -6,10 +6,7 @@ import com.dbs.sae.training.nerddinner.data.repositories.LanguageRepository;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdContactTypeRepository;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdEmailRepository;
 import com.dbs.sae.training.nerddinner.data.repositories.NerdRepository;
-import com.dbs.sae.training.nerddinner.domain.NerdValidator;
-import com.dbs.sae.training.nerddinner.domain.StreamExtensions;
-import com.dbs.sae.training.nerddinner.domain.StringExtensions;
-import com.dbs.sae.training.nerddinner.domain.ValidationGenerator;
+import com.dbs.sae.training.nerddinner.domain.*;
 import com.dbs.sae.training.nerddinner.model.*;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,13 +84,88 @@ public class AccountController {
                         ne -> UUID.randomUUID().toString(),
                         ne -> ne));
 
+        Map<String, NerdPhoneForm> phoneForms = n.getPhones()
+                .stream()
+                .filter(np -> np.getExpiredDate() == null)
+                .map(np -> {
+                    NerdPhoneForm npf = new NerdPhoneForm();
+                    npf.setAreaCode(np.getAreaCode());
+                    npf.setLineNumber(String.join("", np.getCentralOfficePrefix(), np.getLineNumber()));
+                    npf.setNerdFk(n.getNerdPk());
+                    npf.setNerdPhonePk(np.getNerdPhonePk());
+                    npf.setNerdContactTypeFk(np.getNerdContactType().getNerdContactTypePk());
+                    return npf;
+                })
+                .collect(Collectors.toMap(
+                        np -> UUID.randomUUID().toString(),
+                        np -> np));
+
+        Map<String, NerdAddressForm> addressForms = n.getAddresses()
+                .stream()
+                .filter(na -> na.getExpiredDate() == null)
+                .map(na -> {
+                    NerdAddressForm naf = new NerdAddressForm();
+                    assert na.getAddress() != null;
+                    Address a = na.getAddress();
+
+                    naf.setNerdFk(n.getNerdPk());
+                    naf.setNerdAddressPk(na.getNerdAddressPk());
+                    naf.setAddressFk(a.getAddressPk());
+                    naf.setStreetLine1(a.getStreetLine1());
+                    naf.setStreetLine2(a.getStreetLine2());
+                    naf.setCity(a.getCity());
+                    naf.setState(a.getState());
+                    naf.setZip(a.getZip());
+                    naf.setTimeZoneOffsetMinutes(a.getTimeZoneOffsetMinutes());
+                    return naf;
+                })
+                .collect(Collectors.toMap(
+                        np -> UUID.randomUUID().toString(),
+                        np -> np));
+
+
+        NerdPhoneForm phoneTemplate = new NerdPhoneForm();
+        phoneTemplate.setNerdFk(n.getNerdPk());
+        model.setNerdPhoneTemplate(phoneTemplate);
+        model.setPhoneEntryTemplateValidationRules(getValidationRules(phoneTemplate, l));
+
         NerdEmailForm emailFormTemplate = new NerdEmailForm();
         emailFormTemplate.setNerdFk(n.getNerdPk());
         model.setEmailEntryTemplate(emailFormTemplate);
         model.setEmailEntryTemplateValidationRules(getValidationRules(emailFormTemplate, l));
 
+        NerdAddressForm addressTemplate = new NerdAddressForm();
+        addressTemplate.setNerdFk(n.getNerdPk());
+
+        //TODO Probably uses web server timezone. Need to set timezone of user in session when they login by using javascript to get browser timezone.
+        Calendar calendar = Calendar.getInstance(l);
+        TimeZone clientTimeZone = calendar.getTimeZone();
+        Integer clientTimeOffsetMinutes = clientTimeZone.getRawOffset() / 1000 / 60;
+        addressTemplate.setTimeZoneOffsetMinutes(clientTimeOffsetMinutes);
+
+        List<SelectOption> timeZones = Arrays.stream(TimeZone.getAvailableIDs()).map(tzId -> {
+            TimeZone tz = TimeZone.getTimeZone(tzId);
+            SelectOption so = new SelectOption();
+            so.setValue(String.valueOf(tz.getRawOffset() / 1000 / 60));
+            so.setText(tzId);
+            return so;
+        }).collect(Collectors.toList());
+
+        List<SelectOption> states = Arrays.stream(USState.values()).map(usState -> {
+            SelectOption so = new SelectOption();
+            so.setText(usState.getName());
+            so.setValue(usState.getAbbreviation().toString());
+            return so;
+        }).collect(Collectors.toList());
+
+        model.setNerdPhones(phoneForms);
         model.setNerdEmails(emailForms);
+        model.setNerdAddresses(addressForms);
+
+        model.setStates(states);
+        model.setTimezones(timeZones);
         model.setNerdContactTypes(ControllerExtensions.getContactTypesAsSelectOptions(contactTypeRepository, l));
+
         model.setValidationRules(getValidationRules(model, l));
         return "account/email";
     }
@@ -111,10 +183,9 @@ public class AccountController {
         List<Pair<Optional<NerdEmail>, Optional<NerdEmailForm>>> joined = StreamExtensions.OuterJoin(
                 () -> nerdEmails.stream(),
                 () -> formModel.getNerdEmails().values().stream(),
-                (l, r) -> {
-                    return l.getNerdEmailPk() == r.getNerdEmailPk();
-                }
+                (l, r) -> l.getNerdEmailPk() == r.getNerdEmailPk()
         );
+
         List<Pair<Optional<NerdEmail>, Optional<NerdEmailForm>>> toUpdate = joined.stream().filter(t -> t.getValue0().isPresent() && t.getValue1().isPresent()).collect(Collectors.toList());
         List<Pair<Optional<NerdEmail>, Optional<NerdEmailForm>>> toAdd = joined.stream().filter(t -> !t.getValue0().isPresent() && t.getValue1().isPresent()).collect(Collectors.toList());
         List<Pair<Optional<NerdEmail>, Optional<NerdEmailForm>>> toExpire = joined.stream().filter(t -> t.getValue0().isPresent() && !t.getValue1().isPresent()).collect(Collectors.toList());

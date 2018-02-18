@@ -25,9 +25,13 @@ public class NerdAddress {
 
     @OneToOne
     @JoinColumn(name = "NERD_CONTACT_TYPE_FK")
-    private NerdContactType nerd_Contact_Type;
-    private Timestamp last_Update_Date;
-    private Timestamp expired_Date;
+    private NerdContactType nerdContactType;
+
+    @Column(name = "LAST_UPDATE_DATE")
+    private Timestamp lastUpdateDate;
+
+    @Column(name = "EXPIRED_DATE")
+    private Timestamp expiredDate;
 
     @Override
     public boolean equals(Object o) {
