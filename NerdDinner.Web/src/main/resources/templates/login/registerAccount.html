@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="common/minimum">
+<head>
+    <title th:text="#{login.registerAccount.title}">Register account</title>
+</head>
+<body>
+<section layout:fragment="header">
+    <th:block th:text="#{login.registerAccount.registerAnAccount}"></th:block>
+</section>
+
+<section layout:fragment="content">
+
+    <form th:action="@{/registerAccount}" th:object="${registerAccount}" action="/registerAccount"
+          method="post">
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                textInput(
+                                    fieldName='firstName',
+                                    field=*{firstName},
+                                    displayName= #{login.registerAccount.firstName},
+                                    placeHolder= #{login.registerAccount.enterFirstName})"></div>
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='lastName',
+                                                field=*{lastName},
+                                                displayName=#{login.registerAccount.lastName},
+                                                placeHolder=#{login.registerAccount.enterLastName})"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+
+
+            <th-block th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='username',
+                                                field=*{username},
+                                                displayName=#{login.registerAccount.userName},
+                                                placeHolder=#{login.registerAccount.enterUserName})"></th-block>
+
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-8">
+                    <th-block th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='email',
+                                                field=*{email},
+                                                displayName=#{login.registerAccount.emailAddress},
+                                                placeHolder=#{login.registerAccount.enterEmail},
+                                                type='Email')"/>
+                </div>
+                <div class="col-md-4">
+                    <label th:text="#{common.phrases.contactType}"></label>
+                    <select
+                            th:classappend="${#fields.hasErrors('selectedContactType')} ? 'is-invalid':''"
+                            th:value="*{selectedContactType}"
+                            name="selectedContactType"
+                            class="form-control">
+                        <option value="">-----</option>
+                        <option th:each="contactType : ${contactTypes}"
+                                th:value="${contactType.value}"
+                                th:text="${contactType.text}"
+                                th:selected="${contactType.value} == *{selectedContactType}">Wireframe
+                        </option>
+                    </select>
+                    <small th:if="${#fields.hasErrors('selectedContactType')}"
+                           th:each="error : ${#fields.errors('selectedContactType')}" th:text="${error}"
+                           class="text-danger"/>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='password',
+                                                field=*{password},
+                                                displayName=#{login.registerAccount.password},
+                                                placeHolder=#{login.registerAccount.password},
+                                                type='Password')"></div>
+                </div>
+                <div class="col-md-6">
+                    <div th:replace="fragments/inputs::
+                                             textInput(
+                                                fieldName='confirmPassword',
+                                                field=*{confirmPassword},
+                                                displayName=#{login.registerAccount.confirmPassword},
+                                                placeHolder=#{login.registerAccount.confirmPassword},
+                                                type='Password')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label th:text="#{login.registerAccount.selectAvatar}"></label>
+                    <small th:if="${#fields.hasErrors('avatar')}" th:each="error : ${#fields.errors('avatar')}"
+                           th:text="${error}" class="text-danger"/>
+                    <input type="hidden" th:field="*{avatar}"/>
+                    <div class="avatarContainer largeAvatarContainer">
+                        <span th:style="${avatar == null} ? 'display:block' : 'display:none'"
+                              class="fa fa-question missingAvatarImage" id="missingAvatarImage"></span>
+                        <img th:style="${avatar == null} ? 'display:none' : 'display:block'"
+                             class="avatarImage largeAvatarImage" id="avatarImage" th:src="${avatar}"/>
+                    </div>
+
+
+                    <th:block th:each="avatarSrc : ${avatars}">
+                        <div class="selectAvatarBox overlay"
+                             th:onclick="'window.NerdDinner.setAvatar(\'' + ${avatarSrc} + '\')'">
+                            <img class="avatarImage" th:src="${avatarSrc}"/>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" th:text="#{login.registerAccount.register}"
+                type="submit"></button>
+
+    </form>
+    <div class="text-center">
+        <a class="d-block small mt-3" href="/login" th:text="#{login.forgotPassword.loginPage}"></a>
+        <a class="d-block small" href="/forgotPassword" th:text="#{login.login.forgotPassword}"></a>
+    </div>
+
+
+</section>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+        (function (ND) {
+            ND.setAvatar = function (avatarSrc) {
+                $('#avatar').val(avatarSrc);
+                $('#missingAvatarImage').css("display", "none");
+                $('#avatarImage').attr("src", avatarSrc).css("display", "block");
+
+            }
+        })(window.NerdDinner = window.NerdDinner || {})
+    </script>
+</th:block>
+
+</body>
+</html>

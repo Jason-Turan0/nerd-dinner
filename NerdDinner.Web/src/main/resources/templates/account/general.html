@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="common/layout">
+<head>
+    <title>Content page 1</title>
+</head>
+<body>
+<ol class="breadcrumb" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item">
+        <a th:text="#{common.layout.home}" th:href="@{/}">Home</a>
+    </li>
+    <li th:text="#{common.layout.editAccount}" class="breadcrumb-item active">Edit Account</li>
+    <li th:text="#{common.layout.general}" class="breadcrumb-item active">General</li>
+</ol>
+<section layout:fragment="content">
+    <div class="alert alert-success" th:if="${param.saveSuccessful}" th:text="#{common.phrases.saveSuccessful}">
+    </div>
+    <form name="generalNerdSettings" th:action="@{/account/general}"
+          th:attr="data-success-url=@{/account/general} + '?saveSuccessful=true'" th:object="${generalNerdSettingsForm}"
+          method="post">
+        <div class="form-group">
+             <div class="form-row">
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                 textInput(
+                                     fieldName='firstName',
+                                     field=*{firstName},
+                                     displayName= #{login.registerAccount.firstName},
+                                     placeHolder= #{login.registerAccount.enterFirstName})"></div>
+                 </div>
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='lastName',
+                                                 field=*{lastName},
+                                                 displayName=#{login.registerAccount.lastName},
+                                                 placeHolder=#{login.registerAccount.enterLastName})"></div>
+                 </div>
+             </div>
+         </div>
+         <div class="form-group">
+             <th-block th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='username',
+                                                 field=*{username},
+                                                 displayName=#{login.registerAccount.userName},
+                                                 placeHolder=#{login.registerAccount.enterUserName})"></th-block>
+         </div>
+         <div class="form-group">
+             <div class="form-row">
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='password',
+                                                 field=*{password},
+                                                 displayName=#{account.general.changePassword},
+                                                 placeHolder=#{account.general.changePassword},
+                                                 type='Password')"></div>
+                 </div>
+                 <div class="col-md-6">
+                     <div th:replace="fragments/inputs::
+                                              textInput(
+                                                 fieldName='confirmPassword',
+                                                 field=*{confirmPassword},
+                                                 displayName=#{account.general.confirmChangePassword},
+                                                 placeHolder=#{account.general.confirmChangePassword},
+                                                 type='Password')"></div>
+                 </div>
+             </div>
+         </div>
+        <th:block th:each="description , stat : ${generalNerdSettingsForm.nerdDescriptions}"
+                  style="padding:.25rem 1.5rem">
+            <input type="hidden" th:name="|nerdDescriptions[${stat.index}].languageFk|"
+                   th:value="${description.languageFk}"/>
+            <input type="hidden" th:name="|nerdDescriptions[${stat.index}].languageName|"
+                   th:value="${description.languageName}"/>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <label th:text="#{account.general.company} + ':' +${description.languageName }"></label>
+                        <input
+                                class="form-control"
+                                th:type="Text"
+                                th:value="${description.company}"
+                                th:name="|nerdDescriptions[${stat.index}].company|"
+                                th:placeholder="#{account.general.company} + ':' + ${description.languageName}"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label th:text="#{account.general.title} + ':' + ${description.languageName}"></label>
+                        <input
+                                class="form-control"
+                                th:type="Text"
+                                th:value="${description.title}"
+                                th:name="|nerdDescriptions[${stat.index}].title|"
+                                th:placeholder="#{account.general.title} + ':' + ${description.languageName}"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label th:text="#{account.general.biography} + ':' +${description.languageName }"></label>
+                        <textarea
+                                class="form-control"
+                                th:type="Text"
+                                th:text="${description.biography}"
+                                th:value="${description.biography}"
+                                th:name="|nerdDescriptions[${stat.index}].biography|"
+                                th:placeholder="#{account.general.biography} + ':' + ${description.languageName}"
+                                rows="3"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label th:text="#{login.registerAccount.selectAvatar}"></label>
+                    <small th:if="${#fields.hasErrors('avatar')}" th:each="error : ${#fields.errors('avatar')}"
+                           th:text="${error}" class="text-danger"></small>
+                    <input type="hidden" th:field="*{avatar}"/>
+                    <div class="avatarContainer largeAvatarContainer">
+                        <img class="avatarImage largeAvatarImage" id="avatarImage" th:src="*{avatar}"/>
+                    </div>
+                    <th:block th:each="avatarSrc : ${avatars}">
+                        <div class="selectAvatarBox overlay"
+                             th:onclick="'window.NerdDinner.setAvatar(\'' + ${avatarSrc} + '\')'">
+                            <img class="avatarImage" th:src="${avatarSrc}"/>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-danger summaryContainer" style="display: none;">
+
+        </div>
+
+        <div class="btn btn-primary" th:text="#{common.phrases.save}"
+             th:onclick="'window.NerdDinner.submitForm(this);'"></div>
+    </form>
+</section>
+<th:block layout:fragment="scripts">
+    <script th:inline="javascript" type="text/javascript">
+        (function (ND) {
+            ND.setAvatar = function (avatarSrc) {
+                $('#avatar').val(avatarSrc);
+                $('#avatarImage').attr("src", avatarSrc).css("display", "block");
+            };
+            var rulesData = /*[[${generalNerdSettingsForm.validationRules}]]*/"";
+            var rules = JSON.parse(rulesData);
+            window.NerdDinner.initializeForm({
+                form: $('[name="generalNerdSettings"]')[0],
+                rules: rules
+            });
+        })(window.NerdDinner = window.NerdDinner || {});
+
+    </script>
+</th:block>
+</body>
+</html>

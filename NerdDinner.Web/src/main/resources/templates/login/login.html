@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="common/minimum">
+<head>
+    <title th:text="#{login.login.title}"></title>
+</head>
+<body>
+
+<section layout:fragment="header">
+    <th:block th:text="#{login.login.title}"></th:block>
+</section>
+
+<section layout:fragment="content">
+
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label th:text="#{login.login.selectLanguage}">Select Language</label>
+            <th:block th:replace="fragments/inputs::localeSelector(width='100%')">
+            </th:block>
+        </div>
+        <div class="form-group">
+            <label for="username" th:text="#{login.login.userName}">User Name</label>
+            <input class="form-control" th:attr="placeholder=#{login.login.enterUserName}" id="username"
+                   type="text" name="username"
+                   placeholder=""/>
+        </div>
+        <div class="form-group">
+            <label for="password" th:text="#{login.login.password}">Password</label>
+            <input class="form-control" id="password" name="password" type="password"
+                   th:attr="placeholder=#{login.login.password}" placeholder=""/>
+        </div>
+        <div class="alert alert-danger" th:if="${param.error}">
+            <span th:text="#{login.login.invalidUsername}">Invalid username or password</span>
+        </div>
+        <div class="alert alert-info" th:if="${param.logout}" th:text="#{login.login.logoutSuccess}">
+            You have been logged out.
+        </div>
+        <div class="alert alert-info" th:if="${param.logoutMessage}" th:text="${param.logoutMessage[0]}">
+        </div>
+
+        <button class="btn btn-primary btn-block" th:text="#{login.login.loginButtonText}"
+                type="submit"></button>
+    </form>
+
+    <div class="text-center">
+        <a class="d-block small mt-3" href="/registerAccount"
+           th:text="#{login.forgotPassword.registerAnAccount}"></a>
+        <a class="d-block small" href="/forgotPassword" th:text="#{login.login.forgotPassword}"></a>
+    </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="common/layout">
+<head>
+    <title>Content page 1</title>
+</head>
+<th:block>
+<ol class="breadcrumb" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item">
+        <a th:text="#{common.layout.home}" th:href="@{/}">Home</a>
+    </li>
+    <li th:text="#{common.layout.editAccount}" class="breadcrumb-item active">Edit Account</li>
+    <li th:text="#{common.layout.email}" class="breadcrumb-item active">Email</li>
+</ol>
+<th:block th:fragment="emailEntryTemplate(key, nerdEmail, nerdContactTypes)">
+    <tr>
+        <input type="hidden"
+               th:name="|nerdEmails[${key}].nerdEmailPk|"
+               th:value="${nerdEmail.nerdEmailPk}"
+               data-validation-name="nerdEmailPk"
+        />
+        <input type="hidden"
+               th:name="|nerdEmails[${key}].nerdFk|"
+               th:value="${nerdEmail.nerdFk}"
+               data-validation-name="nerdFk"
+        />
+        <td>
+            <div class="btn btn-danger emailDelete" th:text="#{common.phrases.delete}"></div>
+        </td>
+        <td>
+            <input
+                    class="form-control"
+                    th:type="Text"
+                    th:value="${nerdEmail.email}"
+                    th:name="|nerdEmails[${key}].email|"
+                    data-validation-name="email"
+                    th:placeholder="#{common.layout.email}"/>
+        </td>
+        <td>
+            <select th:value="${nerdEmail.nerdContactTypeFk}"
+                    th:name="|nerdEmails[${key}].nerdContactTypeFk|"
+                    data-validation-name="nerdContactTypeFk"
+                    class="form-control">
+                <option value="">-----</option>
+                <option th:each="contactType : ${nerdContactTypes}"
+                        th:value="${contactType.value}"
+                        th:text="${contactType.text}"
+                        th:selected="${contactType.value} == ${nerdEmail.nerdContactTypeFk}">
+                </option>
+            </select>
+        </td>
+    </tr>
+</th:block>
+    <th:block th:fragment="phoneEntryTemplate(key, nerdPhone, nerdContactTypes)">
+        <tr>
+            <input type="hidden"
+                   th:name="|nerdPhones[${key}].nerdPhonePk|"
+                   th:value="${nerdPhone.nerdPhonePk}"
+                   data-validation-name="nerdPhonePk"
+            />
+            <input type="hidden"
+                   th:name="|nerdPhones[${key}].nerdFk|"
+                   th:value="${nerdPhone.nerdFk}"
+                   data-validation-name="nerdFk"
+            />
+            <td>
+                <div class="btn btn-danger phoneDelete" th:text="#{common.phrases.delete}"></div>
+            </td>
+            <td>
+                <input
+                        class="form-control"
+                        th:type="Text"
+                        th:value="${nerdPhone.areaCode}"
+                        th:name="|nerdPhones[${key}].areaCode|"
+                        data-validation-name="areaCode"
+                        th:placeholder="#{common.phrases.areaCode}"/>
+            </td>
+            <td>
+
+                <input
+                        class="form-control"
+                        th:type="Text"
+                        th:value="${nerdPhone.lineNumber}"
+                        th:name="|nerdPhones[${key}].lineNumber|"
+                        data-validation-name="lineNumber"
+                        th:placeholder="#{common.phrases.lineNumber}"/>
+            </td>
+            <td>
+                <select th:value="${nerdPhone.nerdContactTypeFk}"
+                        th:name="|nerdPhones[${key}].nerdContactTypeFk|"
+                        data-validation-name="nerdContactTypeFk"
+                        class="form-control">
+                    <option value="">-----</option>
+                    <option th:each="contactType : ${nerdContactTypes}"
+                            th:value="${contactType.value}"
+                            th:text="${contactType.text}"
+                            th:selected="${contactType.value} == ${nerdPhone.nerdContactTypeFk}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </th:block>
+    <th:block th:fragment="addressEntryTemplate(key, nerdAddress, nerdContactTypes, states, timezones)">
+        <div class="table-margin addressContainer">
+
+            <input type="hidden"
+                   th:name="|nerdAddresses[${key}].nerdFk|"
+                   th:value="${nerdAddress.nerdAddressPk}"
+                   data-validation-name="nerdAddressPk"
+            />
+            <input type="hidden"
+                   th:name="|nerdAddresses[${key}].nerdFk|"
+                   th:value="${nerdAddress.nerdFk}"
+                   data-validation-name="nerdFk"
+            />
+            <input type="hidden"
+                   th:name="|nerdAddresses[${key}].addressFk|"
+                   th:value="${nerdAddress.addressFk}"
+                   data-validation-name="addressFk"
+            />
+
+            <div class="form-group">
+                <label>Address</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        th:name="|nerdAddresses[${key}].streetLine1|"
+                        th:value="${nerdAddress.streetLine1}"
+                        th:placeholder="#{account.contact.streetLine1}"
+                />
+                <!-- TODO CONTINUE FROM HERE -->
+
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Address 2</label>
+                <input type="text" class="form-control" id="inputAddress2"
+                       placeholder="Apartment, studio, or floor"/>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" id="inputCity"/>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputState">State</label>
+                    <select id="inputState" class="form-control">
+                        <option>Choose...</option>
+                        <option>...</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="text" class="form-control" id="inputZip"/></div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Timezone</label>
+                    <select id="inputTimezone" class="form-control">
+                        <option>Choose...</option>
+                        <option>...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="btn btn-danger addressDelete" th:text="#{common.phrases.delete}"></div>
+
+        </div>
+    </th:block>
+
+    <section layout:fragment="content">
+    <div class="alert alert-success" th:if="${param.saveSuccessful}" th:text="#{common.phrases.saveSuccessful}">
+    </div>
+    <form name="nerdEmails" th:action="@{/account/email}"
+          th:attr="data-success-url=@{/account/email} + '?saveSuccessful=true'" th:object="${nerdEmailsForm}"
+          method="post">
+        <div class="card">
+            <div class="card-header" th:text="#{common.layout.email}">
+                Email
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="static-width-150"></th>
+                            <th th:text="#{common.layout.email}">Email</th>
+                            <th class="static-width-150" th:text="#{common.phrases.contactType}">Contact Type</th>
+                        </tr>
+                        </thead>
+                        <tbody id="nerdEmailBody">
+                        <th:block th:each="nerdEmailEntry , stat : ${nerdEmailsForm.nerdEmails.entrySet()}">
+                            <th-block th:replace="account/email::emailEntryTemplate(
+                                                key=${nerdEmailEntry.key},
+                                                nerdEmail=${nerdEmailEntry.value},
+                                                nerdContactTypes= ${nerdEmailsForm.nerdContactTypes})"/>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <div class="btn btn-success" th:text="#{common.phrases.add}" id="addEmailButton"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header" th:text="#{common.layout.phone}">
+                Phone
+            </div>
+            <div class="card-block">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="static-width-150"></th>
+                            <th th:text="#{common.phrases.areaCode}">Area Code</th>
+                            <th th:text="#{common.phrases.lineNumber}">Line Number</th>
+                            <th class="static-width-150" th:text="#{common.phrases.contactType}">Contact Type</th>
+                        </tr>
+                        </thead>
+                        <tbody id="nerdPhoneBody">
+                        <th:block th:each="nerdPhoneEntry , stat : ${nerdEmailsForm.nerdPhones.entrySet()}">
+                            <th-block th:replace="account/email::phoneEntryTemplate(
+                                                key=${nerdPhoneEntry.key},
+                                                nerdPhone=${nerdPhoneEntry.value},
+                                                nerdContactTypes= ${nerdEmailsForm.nerdContactTypes})"/>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn btn-success" th:text="#{common.phrases.add}" id="addPhoneButton"></div>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header">
+                Address
+            </div>
+            <div class="card-block">
+                <th:block th:each="nerdAddressEntry , stat : ${nerdEmailsForm.nerdAddresses.entrySet()}">
+                    <th-block th:replace="account/email::addressEntryTemplate(
+                                                key=${nerdAddressEntry.key},
+                                                nerdAddress=${nerdAddressEntry.value},
+                                                nerdContactTypes= ${nerdEmailsForm.nerdContactTypes},
+                                                states= ${nerdEmailsForm.states},
+                                                timezones= ${nerdEmailsForm.timezones})"
+                    />
+                </th:block>
+            </div>
+            <div class="card-footer">
+                <div class="btn btn-success" th:text="#{common.phrases.add}" id="addAddressButton"></div>
+            </div>
+
+        </div>
+
+
+        <template id="nerdEmailEntryTemplate">
+            <th-block th:replace="account/email::emailEntryTemplate(
+                                                key='{key}',
+                                                nerdEmail=${nerdEmailsForm.emailEntryTemplate},
+                                                nerdContactTypes= ${nerdEmailsForm.nerdContactTypes})"/>
+        </template>
+        <template id="nerdPhoneEntryTemplate">
+            <th-block th:replace="account/email::phoneEntryTemplate(
+                                                key='{key}',
+                                                nerdPhone=${nerdEmailsForm.nerdPhoneTemplate},
+                                                nerdContactTypes= ${nerdEmailsForm.nerdContactTypes})"/>
+        </template>
+
+        <div class="btn btn-primary table-margin" th:text="#{common.phrases.save}"
+             th:onclick="'window.NerdDinner.submitForm(this);'"></div>
+    </form>
+
+</section>
+<th:block layout:fragment="scripts">
+    <script th:inline="javascript" type="text/javascript">
+        (function (ND) {
+            var emailTemplateRulesData = /*[[${nerdEmailsForm.emailEntryTemplateValidationRules}]]*/"";
+            var emailTemplateRules = JSON.parse(emailTemplateRulesData);
+
+            var phoneTemplateRulesData = /*[[${nerdEmailsForm.phoneEntryTemplateValidationRules}]]*/"";
+            var phoneTemplateRules = JSON.parse(phoneTemplateRulesData);
+
+            var rulesData = /*[[${nerdEmailsForm.validationRules}]]*/"";
+            var rules = JSON.parse(rulesData);
+            window.NerdDinner.initializeForm({
+                form: $('[name="nerdEmails"]')[0],
+                rules: rules,
+                addHandlers: [
+                    {
+                        $template: $('#nerdEmailEntryTemplate'),
+                        templateRules: emailTemplateRules,
+                        $button: $('#addEmailButton'),
+                        $container: $('#nerdEmailBody')
+                    },
+                    {
+                        $template: $('#nerdPhoneEntryTemplate'),
+                        templateRules: phoneTemplateRules,
+                        $button: $('#addPhoneButton'),
+                        $container: $('#nerdPhoneBody')
+                    }
+                ],
+                removeHandlers: [
+                    {
+                        deleteButtonSelector: '.emailDelete',
+                        closestSelector: 'tr'
+                    },
+                    {
+                        deleteButtonSelector: '.phoneDelete',
+                        closestSelector: 'tr'
+                    }
+                ]
+            });
+
+        })(window.NerdDinner = window.NerdDinner || {});
+
+    </script>
+</th:block>
+</body>
+</html>
