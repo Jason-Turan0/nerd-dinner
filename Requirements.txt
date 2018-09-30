@@ -1,13 +1,22 @@
-1. Nerd can sign up for site. Following information will be provided by the nerd
+Functional Requirements
+
+1. Nerd can sign up for site. The following information will be provided by the nerd
  -Name (Required)
  -Addresses (Optional)
  -Phone (Optional)
  -Emails (Required)
  -Photo (Optional)
  -Password (Required)
+ -Password must be encrypted at rest and not be transmitted
 
 2. Nerd can reset password
   -Provide password and reset link will be sent to their email address
+
+3. Site must have support for Internationalization
+   -English United States
+   -English United Kingdom
+   -Spanish Spain
+   -Spanish Mexico
 
 3. Nerd can create dinners
   -Dinner title
@@ -19,7 +28,7 @@
 4. Nerds can invite other nerd to dinner
     -Can filter existing nerd on site
     -Only the creator of a dinner can invite other nerd to that dinner
-    -Can provide email address, first and last name of other nerd. Account will be created and email invite sent to the new nerd
+    -Can provide email address, first and last name of other nerd. Account will be created and email invite sent to the new nerd with password reset requirements
 
 5. Nerds can search for dinners
    -Can filter by zip code, state, city
@@ -33,4 +42,32 @@
    -Past dinners will be displayed in a separate section
    -Future dinners will be displayed in soonest to latest order. They can cancel their reservation for the dinner here.
 
-8. Site needs to not look like fucking garbage.
+Nonfunctional/Technical requirements
+
+1. Consists of the following components...
+    -Spring boot web project that would be the main site
+        -Thymeleaf is used for site wide styling and simple pages
+        -Angular applications will be used for complex pages
+    -Spring boot web project that would be the API for the site
+    -Database migration project using flyway for database releases
+
+2. Should support the following environments...
+    -Local debugging using IntelliJ IDEA
+        -Database would be local h2 instance
+    -DEV environment hosted on local network
+        -Web server would be embedded tomcat server
+        -Database server is locally hosted Oracle instance
+
+3. Should have CI tooling setup using Jenkins and Jenkins Pipeline.
+    -CI build that can be queued on demand to deploy to DEV environment
+        -Will deploy database, web application, and API
+    -Release build that will deploy to Production.
+    -Release builds should be versioned with build number and GIT revision number
+
+4. Should have unit tests for business layer of application and database integration tests using local or in memory database
+
+5. Logging should be captured on the file system
+
+
+User Name =
+CREATE USER NERD_DINNER IDENTIFIED BY "0b4Jc4Ilq7nJ"

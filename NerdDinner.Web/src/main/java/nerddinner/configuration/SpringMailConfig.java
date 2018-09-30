@@ -22,7 +22,6 @@ public class SpringMailConfig {
         return new JavaMailSenderImpl();
     }
 
-    //@Bean()
     public ResourceBundleMessageSource emailMessageSource() {
         final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("mail/MailMessages");

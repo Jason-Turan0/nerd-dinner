@@ -10,22 +10,53 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>NerdDinner.DatabaseMigration</artifactId>
-
+    <repositories>
+        <repository>
+            <id>maven.oracle.com</id>
+            <name>oracle-maven-repo</name>
+            <url>https://maven.oracle.com</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven.oracle.com</id>
+            <name>oracle-maven-repo</name>
+            <url>https://maven.oracle.com</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.2.0</version>
-                <configuration>
-                    <url>jdbc:h2:file:~/nerddinner</url>
-                    <user>sa</user>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
                         <version>1.4.191</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.oracle.jdbc</groupId>
+                        <artifactId>ojdbc8</artifactId>
+                        <version>RELEASE</version>
                     </dependency>
                 </dependencies>
             </plugin>

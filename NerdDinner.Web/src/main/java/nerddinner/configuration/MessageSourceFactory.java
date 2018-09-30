@@ -1,5 +1,8 @@
 package nerddinner.configuration;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -23,5 +26,14 @@ public class MessageSourceFactory {
         return messageBundle;
     }
 
-
+    //Please do not remove. Thymeleaf messages are not getting resolved without this bean declaration in release packages (jar files).
+    @Bean
+    public MessageSource messageSource() {
+        final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasenames("classpath:/Messages", "classpath:/ValidationMessages");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setCacheSeconds(5);
+        return messageSource;
+    }
 }

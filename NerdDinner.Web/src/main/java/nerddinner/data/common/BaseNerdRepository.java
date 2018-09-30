@@ -1,7 +1,6 @@
 package nerddinner.data.common;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.BiConsumer;
