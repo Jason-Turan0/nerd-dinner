@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.dbs.sae.training</groupId>
+	<groupId>com.dbs.sae.training.nerddinner</groupId>
 	<artifactId>nerddinner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>NerdDinner.DatabaseMigration</module>
-        <module>NerdDinner.Web</module>
+        <module>nerddinner-database-migration</module>
+        <module>nerddinner-web</module>
     </modules>
     <packaging>pom</packaging>
 

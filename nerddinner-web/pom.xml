@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>nerddinner</artifactId>
-        <groupId>com.dbs.sae.training</groupId>
+        <groupId>com.dbs.sae.training.nerddinner</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <groupId>com.dbs.sae.training.nerddinner.web</groupId>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>NerdDinner.Web</artifactId>
+    <artifactId>nerddinner-web</artifactId>
     <packaging>jar</packaging>
     <repositories>
         <repository>

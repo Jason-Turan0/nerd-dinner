@@ -12,7 +12,7 @@ Functional Requirements
 2. Nerd can reset password
   -Provide password and reset link will be sent to their email address
 
-3. Site must have support for Internationalization
+3. Site must have support for Internationalization in the following locales
    -English United States
    -English United Kingdom
    -Spanish Spain
