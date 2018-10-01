@@ -1,0 +1,16 @@
+Since this project references Oracle jdbc which isn't available via a publicly visible maven repo there are a couple of additional hoops to jump
+through when initially  setting up the project.
+
+1. Copy the settings-security.xml file to your user Maven directory. In windows this is C:\Users\{username}\.m2
+2. Run the following command from the following folders...
+{projectRoot}\nerdinner-api
+{projectRoot}\nerddinner-web
+{projectRoot}\nerddinner-database-migration
+
+mvn -s settings.xml compile
+
+This should use the master password in your user file in order to decrypt the password in the settings file. This password is then used along with the crazy_op2@yahoo.com account to
+authenticate to the oracle maven repo. At this point it will download the jar into your local maven folder and this step will no longer be necessary.
+
+See this website for more details...
+https://blogs.oracle.com/dev2dev/get-oracle-jdbc-drivers-and-ucp-from-oracle-maven-repository-without-ides#pom

@@ -63,7 +63,8 @@
         1. Will deploy database, web application, and API
     2. Release build that will deploy to Production.
     3. Release builds should be versioned with build number and GIT revision number
-
+    4. No passwords should be stored in source control
+ 
 4. Should have unit tests for business layer of application and database integration tests using local or in memory database
 
 5. Logging should be captured on the file system
