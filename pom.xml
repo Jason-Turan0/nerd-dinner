@@ -9,7 +9,8 @@
     <modules>
         <module>nerddinner-database-migration</module>
         <module>nerddinner-web</module>
-    </modules>
+		<module>nerddinner-api</module>
+	</modules>
     <packaging>pom</packaging>
 
 	<name>nerddinner</name>
